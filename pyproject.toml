@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "sqs_hbs"
+version = "0.1.0"
+description = """
+Self-Quantification System for Health Behavior Support.
+This is an experimental project for my PhD work aiming
+at providing users with personalized recommendations to
+increase their physical activity level.
+"""
+authors = ["Ziip <paul.dulaud@utt.fr>"]
+license = "AGPL3"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.0.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

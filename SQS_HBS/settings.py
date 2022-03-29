@@ -11,20 +11,31 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file
+env = environ.Env()
+environ.Env.read_env(Path(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xmjm-1aw@4!9fpkli*qd3krq5)+_k#)d*4-9wd_k=epq!51s5^'
+SECRET_KEY = env('SECRET_KEY')
+
+# Identifiants de l'app perso déclarée sur le compte d'Anaïs
+FITAPP_CONSUMER_KEY = env('FITAPP_CONSUMER_KEY')
+FITAPP_CONSUMER_SECRET = env('FITAPP_CONSUMER_SECRET')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# SECURITY WARNING: this can also be put in .env for production
 ALLOWED_HOSTS = []
 
 

@@ -16,8 +16,8 @@ Prerequisites
 - poetry (optional but recommended)
 
 
-For production
---------------
+For production (temp instructions)
+----------------------------------
 
 Clone the project repository::
 
@@ -68,7 +68,6 @@ REMINDER
 The ``poetry.lock`` file has been temporarily git ignored in order to
 regenerate the dependencies correctly in case of an environment change.
 
-- [ ] tester installation et update README
 
 - [ ] faire fonctionner fitapp maintenant qu'elle est à jour et
      correctement déclarée

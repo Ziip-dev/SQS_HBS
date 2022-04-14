@@ -1,0 +1,14 @@
+<!-- dashboard/home.html -->
+
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+Mon Tableau de Bord
+{% endblock %}
+
+{% block content %}
+    <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
+    <div>
+    <a href="{% url 'logout' %}">Logout</a>
+    </div>
+{% endblock %}

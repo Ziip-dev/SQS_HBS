@@ -53,18 +53,25 @@ Clone both project repositories::
     git clone https://github.com/Ziip-dev/django-fitbit.git
 
 Create a soft link from the dev dependencies file ``pyproject-dev.toml`` to
-the required poetry dependencies file ``pyproject.toml`` ::
+the required poetry dependencies file ``pyproject.toml``::
 
     cd SQS_HBS/
     ln -s pyproject-dev.toml pyproject.toml
 
-Create a python virtual environment ::
+Create a python virtual environment::
 
     poetry env use /path/to/python3.10
 
-Install dependencies ::
+Install dependencies::
 
     poetry install
+
+
+Deployment
+----------
+
+- dockerisation
+- collectstatic to run on server
 
 
 USAGE
@@ -76,24 +83,35 @@ TODO/doc - usage
 LICENSE
 =======
 
-Distributed under the terms of the _GNU-AGPL-v3: https://github.com/Ziip-dev/SQS_HBS/blob/main/LICENSE, Python bindings of Fitbit WebAPI is free and open source software.
+Distributed under the terms of the `GNU AGPL v3`_.
+
+.. _GNU AGPL v3: https://github.com/Ziip-dev/SQS_HBS/blob/main/LICENSE
 
 
 ISSUES
 ======
 
-If you encounter any problems, please _file-an-issue: https://github.com/Ziip-dev/SQS_HBS/issues along with a detailed description.
+If you encounter any problems, please `file an issue`_ along with a
+detailed description.
+
+.. _file an issue: https://github.com/Ziip-dev/SQS_HBS/issues
 
 
 REMINDER
 ========
 
-The ``poetry.lock`` file has been temporarily git ignored in order to
-regenerate the dependencies correctly in case of an environment change.
+The current ``poetry.lock`` file corresponds to the ``pyproject-dev.toml``
+file.
+
+For deployment in production, remember to delete the lock file in order to
+switch to the ``pyproject-prod.toml`` dependencies.
 
 
 TODO - INCOMING
 ===============
+
+- [ ] solutionner le problème d'application personnelle lors de requêtes
+  pour des utilisateurs différents.
 
 - [ ] tester la récupération effective des données et l'alimentation de la bdd.
 
@@ -103,7 +121,7 @@ TODO - INCOMING
 
 - [ ] intégrer la logique d'accompagnement en fonction de l'AP.
 
-- [ ] intégrer en PWA (tout est dans les ressources collectées + livre).
+- [ ] transformer en PWA (tout est dans les ressources collectées + livre).
 
 - [ ] test IRL sur téléphone.
 
@@ -114,22 +132,12 @@ CHANGELOG
 - Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
   déclarée.
 
-      - mettre en place l'authentification des utilisateurs pour accéder
-            aux views fitbit.
+  - mettre en place l'authentification des utilisateurs pour accéder
+    aux views fitbit.
 
-          - livereload server for fast development of templates.
-          - WhiteNoise setup for static files serving.
+    - livereload server for fast development of templates.
+    - WhiteNoise setup for static files serving.
 
 
 DEBUG NOTES
 ===========
-
-Request URL:
-
-https://www.fitbit.com/oauth2/authorize?
-response_type=code      # authorization code flow
-&client_id=23BJPC
-&redirect_uri=http%3A%2F%2F127.0.0.1%3A7000%2Ffitbit%2Fcomplete%2F
-&scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight
-&state=vRGYNCcCpJz3XIKEfKYsILUYaHcd4W
-

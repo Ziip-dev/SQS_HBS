@@ -14,9 +14,10 @@ license = "AGPL3"
 python = "^3.10"
 Django = "^4.0.3"
 django-environ = "^0.8.1"
-django-fitbit = {git = "https://github.com/Ziip-dev/django-fitbit.git"}
 django-simple-bulma = "^2.5.0"
 whitenoise = "^6.0.0"
+django-widget-tweaks = "^1.4.12"
+django-fitbit = {git = "https://github.com/Ziip-dev/django-fitbit.git"}
 
 [tool.poetry.dev-dependencies]
 

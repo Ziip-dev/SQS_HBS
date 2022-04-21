@@ -49,10 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fitapp',
     'dashboard',
-    'livereload',
+    'fitapp',
     'django_simple_bulma',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'builtins': [
+                'fitapp.templatetags.fitbit',
+            ]
         },
     },
 ]
@@ -134,7 +137,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFILES_FINDERS = [
     # default ones

@@ -7,8 +7,20 @@ Mon Tableau de Bord
 {% endblock %}
 
 {% block content %}
+<!-- from here we are in a <div class="container"> -->
+    
     <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
+    <br>
+    {% if request.user|is_integrated_with_fitbit %}
+        <p> Tes tokens d'authentication Fitbit sont correctement enregistrés :)
+    {% else %}
+        Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+    {% endif %}
+    <br>
+    <br>
     <div>
-    <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'logout' %}">Logout</a>
     </div>
+        
+        
 {% endblock %}

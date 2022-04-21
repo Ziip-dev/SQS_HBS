@@ -1,40 +1,48 @@
-<!-- templates/dashboard/base.html -->
+<!-- dashboard/base.html -->
+
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="fr">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
+  
+  
+  <!-- Include the Bulma CSS framework for styling -->
+  {% load django_simple_bulma %}
+  {% bulma %}
+  {% comment %} {% font_awesome %} {% endcomment %}
+  
+  <title>
+    {% block title %}
+    SQS-HBS
+    {% endblock title %}
+  </title>
+</head>
 
-    <!-- Include the Bulma CSS framework for styling -->
-    {% load django_simple_bulma %}
-    {% bulma %}
-    {% comment %} {% font_awesome %} {% endcomment %}
-
-    <title>
-      {% block title %}
-      SQS-HBS
-      {% endblock title %}
-    </title>
-  </head>
-
-  <body>
-
-    <section class="hero is-small is-success mb-4">
-      <div class="hero-body">
-        <h1 class="title is-1">My Pretty Dashboard</h1>
-      </div>
-    </section>
-
-    <div class="container">
-      <div class="columns">
-        {% block content %}
-        {% endblock content %}
-      </div>
+<body>
+  
+  <!-- Top banner section -->
+  <section class="hero is-primary mb-4">
+    <div class="hero-body">
+      <h1 class="title is-1 has-text-centered">My Dashboard</h1>
     </div>
-
-  </body>
+  </section>
+  
+  <!-- Content section -->
+  <section class="section">
+    <div class="container">
+      
+      {% block content %}
+      {% endblock content %}
+      
+    </div>
+  </section>
+  
+</body>
 
 </html>

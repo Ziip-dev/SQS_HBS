@@ -110,10 +110,24 @@ switch to the ``pyproject-prod.toml`` dependencies.
 TODO - INCOMING
 ===============
 
-- [ ] solutionner le problème d'application personnelle lors de requêtes
-  pour des utilisateurs différents.
+--> il me faut les intraday, pas le choix pour faire du suivi journalier.
 
-- [ ] tester la récupération effective des données et l'alimentation de la bdd.
+- [ ] solutionner le problème lors de requêtes provenant d'utilisateurs
+    différents
+    - [ ] test Anais sur l'endpoint intraday voir ce que je récupère.
+    - [ ] déclaration d'une Server App sur mon compte fitbit.
+    - [ ] tester si je récupère les données non-intraday pour Ines ET Anais.
+
+- [ ] fitbit intraday data request form!
+    - possible with client or server application.
+    - refresh token only supported with Authorization Code Grant flow.
+
+- [ ] solutionner l'alimentation de la bdd.
+
+    - requête testée sur:
+      http://127.0.0.1:7000/fitbit/get_data/activities/minutesSedentary/?base_date=2022-04-01&period=1d
+      OK
+
 
 - [ ] mettre en place le dashboard utilisateur (check templates).
 
@@ -135,9 +149,22 @@ CHANGELOG
   - mettre en place l'authentification des utilisateurs pour accéder
     aux views fitbit.
 
-    - livereload server for fast development of templates.
+    - livereload server for fast development of templates
+       -> cancelled, trop de bugs lors des livereloads.
+
     - WhiteNoise setup for static files serving.
 
 
 DEBUG NOTES
 ===========
+
+Anais
+-----
+
+- la commande `./manage.py refresh_tokens --all` renouvelle bien le token
+  d'authentification non-expiré.
+
+- encodedId:  7D8L5Z
+
+- expires_at: 1650579868.82373
+

@@ -11,11 +11,19 @@ Mon Tableau de Bord
     
     <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
     <br>
+
     {% if request.user|is_integrated_with_fitbit %}
-        <p> Tes tokens d'authentication Fitbit sont correctement enregistrés :)
+
+        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
+        <br>
+        {% comment %} <p>On peut commencer à tester la <a href="{% url 'fitbit-data' %}"récupération de données</a> !</p> {% endcomment %}
+
     {% else %}
+
         Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+
     {% endif %}
+
     <br>
     <br>
     <div>

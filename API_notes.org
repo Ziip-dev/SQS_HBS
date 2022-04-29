@@ -1,0 +1,1162 @@
+Notes perso et résumé sur le fonctionnement de l'API WEB de Fitbit.
+
+* Résumé du fonctionnement
+En gros il y a deux modules (fichiers) importants:
+   - *api.py* -> module principal qui gère tous les call
+   - *gather_keys_oauth2.py* -> script qui permet de récupérer les tokens de manière automatisée
+
+
+** API.PY
+*** FitbitOauth2Client
+Crée un objet ~FitbitOauth2Client~ avec les endpoints de l'API en attributs et 7 paramètres:
+   * client_id
+   * client_secret
+   * access_token (updated active access token)
+   * refresh_token (updated active refresh token, does not expire until used)
+   * expires_at (expires_in -> the time the access token expires in seconds)
+   * refresh_cb
+   * redirect_uri
+
+**** setup de l'autorisation utilisateur
+Il faut juste spécifier ~client_id~ et ~client_secret~ pour effectuer l'autorisation utilisateur (cf. /[[*GATHER_KEYS_OAUTH2.PY][gather_keys_oauth2.py]]/  pour un exemple).
+~access_token~ et ~refresh_token~ sont obtenu après l'autorisation.
+
+**** accéder aux données
+Spécifier les 7 paramètres pour accéder aux données utilisateur.
+
+** GATHER_KEYS_OAUTH2.PY
+On peut soit importer le module dans un script python principal, soit s'en servir pour faire l'initialisation et la récupération des tokens depuis la ligne de commande afin les stocker à la main (étant donné que cette d'initialisation est faite une fois par utilisateur).
+*** OAuth2Server
+Crée un objet ~OAuth2Server~ qui prend ~client_id~ et ~client_secret~ en paramètres.
+La méthode ~__init__~ fait appel à l'objet [[*FitbitOauth2Client][fitbit.api.FitbitOauth2Client]] pour effectuer la requête d'authentification initiale.
+Un serveur Cherrypy est défini pour récupérer la réponse de Fitbit contenant le code de vérification puis pour fetch les tokens.
+
+* Requests and responses
+
+** ACTIVITY
+*** =activities/date/{date}= - Get Activity Summary by Date
+Summary and list of a user's activities and activity log entries for a given day.
+    - activities of the day
+      * calories
+      * duration
+      * name
+      * start time
+      * steps
+    - daily goals
+    - summary
+      * activity calories (estimation mu, BMR, out)
+      * distances (total + at different intensities)
+      * HR zones (calories + duration)
+      * active minutes (sedentary, light, fairly, very)
+      * total steps
+      * resting HR
+
+#+begin_example
+{
+  "activities": [
+    {
+      "activityId": 3001,
+      "activityParentId": 3001,
+      "activityParentName": "Aerobic Workout",
+      "calories": 136,
+      "description": "",
+      "duration": 7168000,
+      "hasActiveZoneMinutes": false,
+      "hasStartTime": true,
+      "isFavorite": false,
+      "lastModified": "2021-12-02T08:22:26.000Z",
+      "logId": 44554352691,
+      "name": "Aerobic Workout",
+      "startDate": "2021-12-01",
+      "startTime": "20:23",
+      "steps": 6053
+    }
+  ],
+  "goals": {
+    "activeMinutes": 30,
+    "caloriesOut": 2246,
+    "distance": 8.05,
+    "floors": 10,
+    "steps": 10000
+  },
+  "summary": {
+    "activeScore": -1,
+    "activityCalories": 1412,
+    "calorieEstimationMu": 2100,
+    "caloriesBMR": 1302,
+    "caloriesOut": 543,
+    "caloriesOutUnestimated": 543,
+    "distances": [
+      {
+        "activity": "total",
+        "distance": 0.28
+      },
+      {
+        "activity": "tracker",
+        "distance": 0.28
+      },
+      {
+        "activity": "loggedActivities",
+        "distance": 0
+      },
+      {
+        "activity": "veryActive",
+        "distance": 0.28
+      },
+      {
+        "activity": "moderatelyActive",
+        "distance": 0
+      },
+      {
+        "activity": "lightlyActive",
+        "distance": 0
+      },
+      {
+        "activity": "sedentaryActive",
+        "distance": 0
+      }
+    ],
+    "elevation": 225.55,
+    "fairlyActiveMinutes": 61,
+    "floors": 74,
+    "heartRateZones": [
+      {
+        "caloriesOut": 320.58198,
+        "max": 94,
+        "min": 30,
+        "minutes": 1195,
+        "name": "Out of Range"
+      },
+      {
+        "caloriesOut": 176.72954,
+        "max": 132,
+        "min": 94,
+        "minutes": 190,
+        "name": "Fat Burn"
+      },
+      {
+        "caloriesOut": 32.23166,
+        "max": 160,
+        "min": 132,
+        "minutes": 20,
+        "name": "Cardio"
+      },
+      {
+        "caloriesOut": 2.19853,
+        "max": 220,
+        "min": 160,
+        "minutes": 1,
+        "name": "Peak"
+      }
+    ],
+    "lightlyActiveMinutes": 243,
+    "marginalCalories": 1,
+    "restingHeartRate": 61,
+    "sedentaryMinutes": 571,
+    "steps": 13268,
+    "useEstimation": true,
+    "veryActiveMinutes": 55
+  }
+}
+#+end_example
+
+*** =activities/list= - Get Activity Log List
+Retreives a list of user's activity log entries before or after a given day with offset and limit.
+    - activities
+      * total active duration (+ detail sedentary, light, fairly, very)
+      * name (+id)
+      * average HR
+      * calories
+      * HR + calories link for specific detailed request
+      * HR zones
+      * start time
+      * total activity steps
+
+#+begin_example
+{
+  "activities": [
+    {
+      "activeDuration": 7168000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 22,
+          "name": "lightly"
+        },
+        {
+          "minutes": 50,
+          "name": "fairly"
+        },
+        {
+          "minutes": 47,
+          "name": "very"
+        }
+      ],
+      "activityName": "Aerobic Workout",
+      "activityTypeId": 3001,
+      "averageHeartRate": 114,
+      "calories": 136,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-01/2021-12-01/1min/time/20:23/22:23.json",
+      "duration": 7168000,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-01/2021-12-01/1sec/time/20:23:38/22:23:06.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 12,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 88,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 20,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-02T08:22:26.000Z",
+      "logId": 44554352691,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 7168000,
+      "originalStartTime": "2021-12-01T20:23:38.000+01:00",
+      "startTime": "2021-12-01T20:23:38.000+01:00",
+      "steps": 6053,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44554352691.tcx"
+    },
+    {
+      "activeDuration": 1178000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 4,
+          "name": "lightly"
+        },
+        {
+          "minutes": 10,
+          "name": "fairly"
+        },
+        {
+          "minutes": 6,
+          "name": "very"
+        }
+      ],
+      "activityName": "Aerobic Workout",
+      "activityTypeId": 3001,
+      "averageHeartRate": 113,
+      "calories": 22,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-03/2021-12-03/1min/time/20:30/20:50.json",
+      "duration": 1178000,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-03/2021-12-03/1sec/time/20:30:31/20:50:09.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 3,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 16,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 1,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-03T21:45:12.000Z",
+      "logId": 44594128030,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1178000,
+      "originalStartTime": "2021-12-03T20:30:31.000+01:00",
+      "startTime": "2021-12-03T20:30:31.000+01:00",
+      "steps": 786,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44594128030.tcx"
+    },
+    {
+      "activeDuration": 1383000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 2,
+          "name": "lightly"
+        },
+        {
+          "minutes": 4,
+          "name": "fairly"
+        },
+        {
+          "minutes": 17,
+          "name": "very"
+        }
+      ],
+      "activityName": "Walk",
+      "activityTypeId": 90013,
+      "averageHeartRate": 112,
+      "calories": 29,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-04/2021-12-04/1min/time/15:11/15:34.json",
+      "duration": 1383000,
+      "elevationGain": 0,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-04/2021-12-04/1sec/time/15:11:47/15:34:50.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 0,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 23,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-05T10:46:34.000Z",
+      "logId": 44618062623,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1383000,
+      "originalStartTime": "2021-12-04T15:11:47.000+01:00",
+      "startTime": "2021-12-04T15:11:47.000+01:00",
+      "steps": 2236,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44618062623.tcx"
+    },
+    {
+      "activeDuration": 1228000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 0,
+          "name": "lightly"
+        },
+        {
+          "minutes": 1,
+          "name": "fairly"
+        },
+        {
+          "minutes": 20,
+          "name": "very"
+        }
+      ],
+      "activityName": "Walk",
+      "activityTypeId": 90013,
+      "averageHeartRate": 114,
+      "calories": 29,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-05/2021-12-05/1min/time/0:35/0:56.json",
+      "duration": 1228000,
+      "elevationGain": 0,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-05/2021-12-05/1sec/time/00:35:51/00:56:19.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 0,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 18,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-05T10:46:34.000Z",
+      "logId": 44618062624,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1228000,
+      "originalStartTime": "2021-12-05T00:35:51.000+01:00",
+      "startTime": "2021-12-05T00:35:51.000+01:00",
+      "steps": 2189,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44618062624.tcx"
+    },
+    {
+      "activeDuration": 1434000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 0,
+          "name": "lightly"
+        },
+        {
+          "minutes": 1,
+          "name": "fairly"
+        },
+        {
+          "minutes": 23,
+          "name": "very"
+        }
+      ],
+      "activityName": "Walk",
+      "activityTypeId": 90013,
+      "averageHeartRate": 119,
+      "calories": 35,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-06/2021-12-06/1min/time/13:39/14:03.json",
+      "duration": 1434000,
+      "elevationGain": 18.288,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-06/2021-12-06/1sec/time/13:39:40/14:03:34.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 0,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 24,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-06T16:45:09.000Z",
+      "logId": 44642388172,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1434000,
+      "originalStartTime": "2021-12-06T13:39:40.000+01:00",
+      "startTime": "2021-12-06T13:39:40.000+01:00",
+      "steps": 2732,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44642388172.tcx"
+    },
+    {
+      "activeDuration": 1741000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 1,
+          "name": "lightly"
+        },
+        {
+          "minutes": 4,
+          "name": "fairly"
+        },
+        {
+          "minutes": 24,
+          "name": "very"
+        }
+      ],
+      "activityName": "Walk",
+      "activityTypeId": 90013,
+      "averageHeartRate": 113,
+      "calories": 39,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-06/2021-12-06/1min/time/16:08/16:37.json",
+      "duration": 1741000,
+      "elevationGain": 9.144,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-06/2021-12-06/1sec/time/16:08:09/16:37:10.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 0,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 29,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-06T16:45:09.000Z",
+      "logId": 44642388174,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1741000,
+      "originalStartTime": "2021-12-06T16:08:09.000+01:00",
+      "startTime": "2021-12-06T16:08:09.000+01:00",
+      "steps": 3148,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44642388174.tcx"
+    },
+    {
+      "activeDuration": 1332000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 0,
+          "name": "lightly"
+        },
+        {
+          "minutes": 1,
+          "name": "fairly"
+        },
+        {
+          "minutes": 21,
+          "name": "very"
+        }
+      ],
+      "activityName": "Walk",
+      "activityTypeId": 90013,
+      "averageHeartRate": 119,
+      "calories": 31,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-07/2021-12-07/1min/time/13:38/14:00.json",
+      "duration": 1332000,
+      "elevationGain": 12.192,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-07/2021-12-07/1sec/time/13:38:23/14:00:35.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 0,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 22,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-07T21:30:24.000Z",
+      "logId": 44670717733,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1332000,
+      "originalStartTime": "2021-12-07T13:38:23.000+01:00",
+      "startTime": "2021-12-07T13:38:23.000+01:00",
+      "steps": 2507,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44670717733.tcx"
+    },
+    {
+      "activeDuration": 1689000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 0,
+          "name": "lightly"
+        },
+        {
+          "minutes": 2,
+          "name": "fairly"
+        },
+        {
+          "minutes": 26,
+          "name": "very"
+        }
+      ],
+      "activityName": "Walk",
+      "activityTypeId": 90013,
+      "averageHeartRate": 113,
+      "calories": 39,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-07/2021-12-07/1min/time/16:13/16:41.json",
+      "duration": 1689000,
+      "elevationGain": 27.432,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-07/2021-12-07/1sec/time/16:13:42/16:41:51.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 1,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 27,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-07T21:30:25.000Z",
+      "logId": 44670717734,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1689000,
+      "originalStartTime": "2021-12-07T16:13:42.000+01:00",
+      "startTime": "2021-12-07T16:13:42.000+01:00",
+      "steps": 2967,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44670717734.tcx"
+    },
+    {
+      "activeDuration": 3942000,
+      "activityLevel": [
+        {
+          "minutes": 1,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 5,
+          "name": "lightly"
+        },
+        {
+          "minutes": 18,
+          "name": "fairly"
+        },
+        {
+          "minutes": 41,
+          "name": "very"
+        }
+      ],
+      "activityName": "Aerobic Workout",
+      "activityTypeId": 3001,
+      "averageHeartRate": 115,
+      "calories": 84,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-07/2021-12-07/1min/time/20:29/21:35.json",
+      "duration": 3942000,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-07/2021-12-07/1sec/time/20:29:42/21:35:24.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 5,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 48,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 10,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-07T21:30:25.000Z",
+      "logId": 44670717735,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 3942000,
+      "originalStartTime": "2021-12-07T20:29:42.000+01:00",
+      "startTime": "2021-12-07T20:29:42.000+01:00",
+      "steps": 3969,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44670717735.tcx"
+    },
+    {
+      "activeDuration": 1639000,
+      "activityLevel": [
+        {
+          "minutes": 0,
+          "name": "sedentary"
+        },
+        {
+          "minutes": 3,
+          "name": "lightly"
+        },
+        {
+          "minutes": 13,
+          "name": "fairly"
+        },
+        {
+          "minutes": 11,
+          "name": "very"
+        }
+      ],
+      "activityName": "Sport",
+      "activityTypeId": 15000,
+      "averageHeartRate": 108,
+      "calories": 31,
+      "caloriesLink": "https://api.fitbit.com/1/user/-/activities/calories/date/2021-12-07/2021-12-07/1min/time/21:36/22:03.json",
+      "duration": 1639000,
+      "hasActiveZoneMinutes": false,
+      "heartRateLink": "https://api.fitbit.com/1/user/-/activities/heart/date/2021-12-07/2021-12-07/1sec/time/21:36:15/22:03:34.json",
+      "heartRateZones": [
+        {
+          "max": 94,
+          "min": 30,
+          "minutes": 1,
+          "name": "Out of Range"
+        },
+        {
+          "max": 132,
+          "min": 94,
+          "minutes": 26,
+          "name": "Fat Burn"
+        },
+        {
+          "max": 160,
+          "min": 132,
+          "minutes": 0,
+          "name": "Cardio"
+        },
+        {
+          "max": 220,
+          "min": 160,
+          "minutes": 0,
+          "name": "Peak"
+        }
+      ],
+      "lastModified": "2021-12-07T21:30:25.000Z",
+      "logId": 44670717736,
+      "logType": "auto_detected",
+      "manualValuesSpecified": {
+        "calories": false,
+        "distance": false,
+        "steps": false
+      },
+      "originalDuration": 1639000,
+      "originalStartTime": "2021-12-07T21:36:15.000+01:00",
+      "startTime": "2021-12-07T21:36:15.000+01:00",
+      "steps": 1522,
+      "tcxLink": "https://api.fitbit.com/1/user/-/activities/44670717736.tcx"
+    }
+  ],
+  "pagination": {
+    "afterDate": "2021-12-01",
+    "limit": 10,
+    "next": "https://api.fitbit.com/1/user/-/activities/list.json?offset=10&limit=10&sort=asc&afterDate=2021-12-01",
+    "offset": 0,
+    "previous": "",
+    "sort": "asc"
+  }
+}
+#+end_example
+
+*** =activities= - Browse Activity Types
+Retreives a tree of all valid Fitbit public activities from the activities catelog as well as private custom activities the user created in the format requested.
+    - activities
+      * id + name
+      * max / min speeds
+      * METS
+
+**** =activities/{activity-id}= - Get Activity Type
+Returns the detail of a specific activity in the Fitbit activities database in the format requested. If activity has levels, it also returns a list of activity level details.
+    - activity
+      * id + name
+      * max / min speeds
+      * METS
+
+#+begin_example
+{
+  "activity": {
+    "accessLevel": "PUBLIC",
+    "hasSpeed": false,
+    "id": 15711,
+    "mets": 8,
+    "name": "Volleyball"
+  }
+}
+#+end_example
+
+*** =activities/frequent= - Get Frequent Activities
+Retreives a list of a user's frequent activities.
+    - activity name + id
+    - calories
+    - distance
+    - duration
+
+#+begin_example
+{
+   "activityId": 15711,
+   "calories": -1,
+   "description": "",
+   "distance": 0,
+   "duration": 1894000,
+   "name": "Volleyball"
+},
+{
+   "activityId": 90009,
+   "calories": 254,
+   "description": "Running - 5 mph (12 min/mile)",
+   "distance": 4,
+   "duration": 1575000,
+   "name": "Run"
+}
+#+end_example
+
+**** =activities/recent= - Get Recent Activities
+Same with recent activities.
+*** =activities/goals/{period}= - Get ACtivity Goals
+Retreives a user's current daily or weekly activity goals.
+    - daily or weekly goals
+
+#+begin_example
+{
+  "goals": {
+    "activeMinutes": 30,
+    "caloriesOut": 2246,
+    "distance": 8.05,
+    "floors": 10,
+    "steps": 10000
+  }
+}
+
+{
+  "goals": {
+    "distance": 56.33,
+    "floors": 70,
+    "steps": 70000
+  }
+}
+#+end_example
+
+
+** ACTIVITY INTRADAY TIME SERIES
+*** =activities/{resource-path}/date/{date}/1d/{detail-level}= - Get Intraday Time Series, *entire day*
+Returns the Intraday Time Series for a given resource (1min or 15min time frame).
+    - parameters
+      + ~{resource-path}~
+        * calories
+        * steps
+        * distance
+        * floors
+        * elevation
+      + ~{detail-level}~
+        * 1min or 15min
+    - activities steps
+      * total
+      * intraday detail
+#+begin_example
+{
+  "activities-steps": [
+    {
+      "dateTime": "2021-12-01",
+      "value": "13268"
+    }
+  ],
+  "activities-steps-intraday": {
+    "dataset": [
+      {
+        "time": "00:00:00",
+        "value": 137
+      },
+      {
+        "time": "00:15:00",
+        "value": 98
+      },
+      {
+        "time": "00:30:00",
+        "value": 131
+      },
+      ...
+#+end_example
+
+**** =activities/{resource-path}/date/{base-date}/{end-date}/{detail-level}= - Daily summaries if spanning over multiple days
+**** =activities/{resource-path}/date/{date}/{end-date}/{detail-level}/time/{start-time}/{end-time}= - Same one, but specifying a time range (inferior to 24h, possibly spanning over two days).
+**** =activities/{resource-path}/date/{date}/1d/{detail-level}/time/{start-time}/{end-time}= - Same than previous, but specifying a time range (inferior to 24h, within a single day)
+
+
+** ACTIVITY TIME SERIES
+
+Pas beaucoup de différence avec les requêtes de la section précédente, si ce n'est "tracker", "1min" only quand intraday dispo (i.e. no tracker data), et davantage de ressources comme minutesFairlyActive.
+Il y a des ressources plus intéressantes ici mais apparemment pas la possibilité de contrôler le time frame de la requête comme dans la section précédente.
+*Solution imaginée ->* croiser les dataframes issus de deux requêtes : la première avec les steps et le time frame voulu, la deuxième avec toute la journée et les minutesLightlyActive (intersection des données). Peut-être inutile si on fonctionne en temps réel, il suffira de lire la dernière heure récupérée.
+
+*** =activities/{resource-path}/date/{base-date}/{end-date}= - Get Activity Resource by Date Range ->  daily summaries if spanning over multiple days
+Returns activities time series data in the specified range for a given resource (1min time frame).
+    - parameters
+      + ~{resource-path}~
+        * calories
+        * caloriesBMR
+        * steps
+        * distance
+        * floors
+        * elevation
+        * minutesSedentary
+        * minutesLightlyActive
+        * minutesFairlyActive
+        * minutesVeryActive
+        * activityCalories
+    - activities resource
+      * total
+      * intraday detail
+#+begin_example
+{
+  "activities-steps": [
+    {
+      "dateTime": "2021-12-01",
+      "value": "13268"
+    }
+  ],
+  "activities-steps-intraday": {
+    "dataset": [
+      {
+        "time": "00:00:00",
+        "value": 0
+      },
+      {
+        "time": "00:01:00",
+        "value": 20
+      },
+      {
+        "time": "00:02:00",
+        "value": 0
+      },
+      ...
+#+end_example
+#+begin_example
+{
+  "activities-minutesSedentary": [
+    {
+      "dateTime": "2021-12-01",
+      "value": "571"
+    }
+  ],
+  "activities-minutesSedentary-intraday": {
+    "dataset": [
+      {
+        "time": "00:00:00",
+        "value": 1
+      },
+      {
+        "time": "00:01:00",
+        "value": 0
+      },
+      {
+        "time": "00:02:00",
+        "value": 1
+      },
+      ...
+#+end_example
+#+begin_example
+{
+  "activities-minutesFairlyActive": [
+    {
+      "dateTime": "2021-12-01",
+      "value": "61"
+    }
+  ],
+  "activities-minutesFairlyActive-intraday": {
+    "dataset": [
+      {
+        "time": "00:00:00",
+        "value": 0
+      },
+      {
+        "time": "00:01:00",
+        "value": 0
+      },
+      ...
+#+end_example
+
+**** =activities/tracker/{resource-path}/date/{base-date}/{end-date}= -> only daily summaries
+Tracker = tracker data only (no difference if the user does not manually add activities in the app)
+
+**** =activities/{resource-path}/date/{date}/{period}=
+    - intraday 1min if ~period=1d~
+    - daily summaries of ~period=7d, 30d, 1w, 1m, 3m, 6m, 1y, or max~
+
+**** =activities/tracker/{resource-path}/date/{date}/{period}= -> same but only daily summaries with tracker data
+
+
+
+** HEART RATE INTRADAY TIME SERIES
+*** =activities/heart/date/{date}/1d/{detail-level}= - Get Heart Rate Intraday Time Series, *entire day*
+Returns the intraday time series for a given resource in the format requested. If your application has the appropriate access, your calls to a time series endpoint for a specific day (by using start and end dates on the same day or a period of 1d), the response will include extended intraday values with a one-minute detail level for that day.
+    - parameters
+      + ~{detail-level}~
+        * 1sec or 1min
+    - HR zones
+      * calories
+      * minutes
+      * zone names
+    - Resting HR
+
+**** =activities/heart/date/{date}/{end-date}/{detail-level}= - Daily summaries if spanning over multiple days
+**** =activities/heart/date/{date}/{end-date}/{detail-level}/time/{start-time}/{end-time}= - Same one, but specifying a time range (inferior to 24h, possibly spanning over two days).
+
+**** =activities/heart/date/{date}/1d/{detail-level}/time/{start-time}/{end-time}= - Same than previous, but specifying a time range (inferior to 24h, within a single day)
+
+
+** HEART RATE TIME SERIES
+*** =activities/heart/date/{date}/{period}= - Get Heart Rate Time Series
+    - intraday 1min if ~period=1d~
+    - daily summaries of ~period=7d, 30d, 1w, 1m, 3m, 6m, 1y, or max~
+    - HR zones (calories, minutes, names)
+    - resting HR
+
+**** =activities/heart/date/{base-date}/{end-date}= - Same one, but specifying date range for summary
+
+
+** TODO SLEEP
+
+
+** DEVICES
+*** =devices= - Get Devices
+Returns a list of the Fitbit devices connected to a user's account.
+    - battery + battery level
+    - last time sync
+
+#+begin_example
+{
+  "battery": "Low",
+  "batteryLevel": 16,
+  "deviceVersion": "Charge 3",
+  "features": [],
+  "id": "1773079434",
+  "lastSyncTime": "2021-12-20T11:14:11.000",
+  "mac": "1237283C76C9",
+  "type": "TRACKER"
+}
+#+end_example
+
+
+
+** USER
+*** =profile= - Get Profile
+Returns a user's profile. The authenticated owner receives all values. However, the authenticated user's access to other users' data is subject to those users' privacy settings.
+    - age
+    - average daily steps
+    - gender
+

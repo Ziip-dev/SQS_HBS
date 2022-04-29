@@ -116,24 +116,24 @@ TODO - INCOMING
     fitapp.api.intraday_time_series() à l'instar de fitapp.api.time_series()
     vérifier dans les forks avant tout:
 
-                       +-------------------------+
-                       | fitapp.views.get_data() |
-                       +-------------------------+
-                                    |
-                                    |
-                                   \ /
-                                    '
-                    +--------------------------------+
-                    | fitapp.utils.get_fitbit_data() |
-                    +--------------------------------+
-                                    |
-                       _____________|______________
-                      |                           |
-                     \ /                         \ /
-                      '                           '
-    +--------------------------+         +-----------------------------------+
-    | fitapp.api.time_series() |         | fitapp.api.intraday_time_series() |
-    +--------------------------+         +-----------------------------------+
+                       \+-------------------------+
+                       \| fitapp.views.get_data() |
+                       \+-------------------------+
+                                    \|
+                                    \|
+                                   \\ /
+                                    \'
+                    \+--------------------------------+
+                    \| fitapp.utils.get_fitbit_data() |
+                    \+--------------------------------+
+                                    \|
+                       \_____________|______________
+                      \|                           |
+                     \\ /                         \ /
+                      \'                           '
+    \+--------------------------+         +-----------------------------------+
+    \| fitapp.api.time_series() |         | fitapp.api.intraday_time_series() |
+    \+--------------------------+         +-----------------------------------+
 
 
 - [ ] solutionner le problème lors de requêtes provenant d'utilisateurs

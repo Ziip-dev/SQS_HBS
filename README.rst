@@ -111,16 +111,36 @@ TODO - INCOMING
 ===============
 
 --> il me faut les intraday, pas le choix pour faire du suivi journalier.
+    Bien que la fonction préparant la requête existe dans fitapp.api,
+    il faut modifier fitapp.utils.get_fitbit_data() pour pouvoir call
+    fitapp.api.intraday_time_series() à l'instar de fitapp.api.time_series()
+    vérifier dans les forks avant tout:
+
+                       +-------------------------+
+                       | fitapp.views.get_data() |
+                       +-------------------------+
+                                    |
+                                    |
+                                   \ /
+                                    '
+                    +--------------------------------+
+                    | fitapp.utils.get_fitbit_data() |
+                    +--------------------------------+
+                                    |
+                       _____________|______________
+                      |                           |
+                     \ /                         \ /
+                      '                           '
+    +--------------------------+         +-----------------------------------+
+    | fitapp.api.time_series() |         | fitapp.api.intraday_time_series() |
+    +--------------------------+         +-----------------------------------+
+
 
 - [ ] solutionner le problème lors de requêtes provenant d'utilisateurs
     différents
     - [ ] test Anais sur l'endpoint intraday voir ce que je récupère.
     - [ ] déclaration d'une Server App sur mon compte fitbit.
     - [ ] tester si je récupère les données non-intraday pour Ines ET Anais.
-
-- [ ] fitbit intraday data request form!
-    - possible with client or server application.
-    - refresh token only supported with Authorization Code Grant flow.
 
 - [ ] solutionner l'alimentation de la bdd.
 
@@ -142,6 +162,10 @@ TODO - INCOMING
 
 CHANGELOG
 =========
+
+- fitbit intraday data request form!
+    - possible with client or server application.
+    - refresh token only supported with Authorization Code Grant flow.
 
 - Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
   déclarée.

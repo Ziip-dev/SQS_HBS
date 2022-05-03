@@ -118,79 +118,89 @@ TODO - INCOMING
 
 ::
 
-                       +-------------------------+
-                       | fitapp.views.get_data() |
-                       +-------------------------+
-                                    |
-                                    |
-                                   \ /
-                                    '
-                    +--------------------------------+
-                    | fitapp.utils.get_fitbit_data() |
-                    +--------------------------------+
-                                    |
-                       _____________|______________
-                      |                           |
-                     \ /                         \ /
-                      '                           '
-    +--------------------------+         +-----------------------------------+
-    | fitapp.api.time_series() |         | fitapp.api.intraday_time_series() |
-    +--------------------------+         +-----------------------------------+
+                            +-------------------------+
+                            | fitapp.views.get_data() |
+                            +-------------------------+
+                                         |
+                                         |
+                                        \ /
+                                         '
+                         +--------------------------------+
+                         | fitapp.utils.get_fitbit_data() |
+                         +--------------------------------+
+                                         |
+                            _____________|______________
+                           |                           |
+                          \ /                         \ /
+                           '                           '
+         +--------------------------+         +-----------------------------------+
+         | fitapp.api.time_series() |         | fitapp.api.intraday_time_series() |
+         +--------------------------+         +-----------------------------------+
 
 
-- [ ] solutionner le problème lors de requêtes provenant d'utilisateurs
-    différents
-    - [ ] test Anais sur l'endpoint intraday voir ce que je récupère.
-    - [ ] déclaration d'une Server App sur mon compte fitbit.
-    - [ ] tester si je récupère les données non-intraday pour Ines ET Anais.
+- [ ] Passer sur les données intraday :
 
-- [ ] solutionner l'alimentation de la bdd.
+    - [x] fitbit intraday data request form!
+        . possible with client or server application.
+        . refresh token only supported with Authorization Code Grant flow.
+
+    - [ ] test Anais sur l'endpoint intraday --> méthode à modifier d'abord
+
+
+- [ ] Changer sqlite ou définir config Celery pour fonctionnement concurrent
+
+
+- [ ] Alimenter la BDD :
 
     - requête testée sur:
       http://127.0.0.1:7000/fitbit/get_data/activities/minutesSedentary/?base_date=2022-04-01&period=1d
       OK
 
 
-- [ ] mettre en place le dashboard utilisateur (check templates).
+- [ ] Mettre en place le dashboard utilisateur (check templates).
 
-- [ ] intégrer l'analyse des données d'activité physique de l'utilisateur.
+- [ ] Intégrer l'analyse des données d'activité physique de l'utilisateur.
 
-- [ ] intégrer la logique d'accompagnement en fonction de l'AP.
+- [ ] Intégrer la logique d'accompagnement en fonction de l'AP.
 
-- [ ] transformer en PWA (tout est dans les ressources collectées + livre).
+- [ ] Transformer en PWA (tout est dans les ressources collectées + livre).
 
-- [ ] test IRL sur téléphone.
+- [ ] Test IRL sur téléphone.
+
 
 
 CHANGELOG
 =========
 
-- fitbit intraday data request form!
-    - possible with client or server application.
-    - refresh token only supported with Authorization Code Grant flow.
+- [x] solutionner le problème lors de requêtes provenant d'utilisateurs
+    différents
 
-- Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
+    - [x] déclaration d'une Server App sur mon compte fitbit.
+
+    - [x] tester si je récupère les données non-intraday pour Ines ET Anais.
+
+
+
+- [x] Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
   déclarée.
 
-  - mettre en place l'authentification des utilisateurs pour accéder
+  - [x] mettre en place l'authentification des utilisateurs pour accéder
     aux views fitbit.
 
-    - livereload server for fast development of templates
-       -> cancelled, trop de bugs lors des livereloads.
+      - [x] livereload server for fast development of templates
+        --> cancelled, trop de bugs lors des livereloads.
 
-    - WhiteNoise setup for static files serving.
+      - [x] WhiteNoise setup for static files serving.
+
 
 
 DEBUG NOTES
 ===========
 
-Anais
------
+CLI
+---
 
-- la commande `./manage.py refresh_tokens --all` renouvelle bien le token
-  d'authentification non-expiré.
-
-- encodedId:  7D8L5Z
-
-- expires_at: 1650579868.82373
-
+- manually refresh tokens: `./manage.py refresh_tokens -v 3`
+- manually refresh even non-expired tokens: `./manage.py refresh_tokens --all`
+- del users with invalid refresh tokens: `./manage.py refresh_tokens --deauth`
+  --> deauth removes UserFitbit

@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dashboard',
+    'dashboard.apps.DashboardConfig',
     'fitapp',
     'django_simple_bulma',
     'widget_tweaks',

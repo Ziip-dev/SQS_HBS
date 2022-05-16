@@ -141,20 +141,64 @@ TODO - INCOMING
 - [ ] Passer sur les données intraday :
 
     - [x] fitbit intraday data request form!
-        . possible with client or server application.
-        . refresh token only supported with Authorization Code Grant flow.
+        - possible with client or server application.
+        - refresh token only supported with Authorization Code Grant flow.
 
     - [ ] test Anais sur l'endpoint intraday --> méthode à modifier d'abord
 
 
+
 - [ ] Changer sqlite ou définir config Celery pour fonctionnement concurrent
+      "If using sqlite, create a celery configuration that prevents the fitapp
+       celery tasks from being executed concurrently."
+       Celery is required only for managing queued tasks for subscripiton??
+       C'est à moi d'intégrer Celery dans ma webapp si je veux en gros...
+       Pour l'instant on va écrire dans la base de données hein.
+
 
 
 - [ ] Alimenter la BDD :
 
-    - requête testée sur:
+    - [x] requête manuelle OK:
       http://127.0.0.1:7000/fitbit/get_data/activities/minutesSedentary/?base_date=2022-04-01&period=1d
-      OK
+
+    - [x] requête générée automatiquement OK:
+      <a href="{% url 'fitbit-data' category='activities' resource='minutesSedentary' %}?base_date=2022-04-01&period=1d"></a>
+
+    - [x] pas la peine de variabiliser les paramètres des requêtes `base_date`
+      et `period` car les requêtes seront gérées automatiquement et non par des
+      liens.
+
+    - [ ] vu que la view de `fitapp` permettant de récupérer les données est
+          une vue AJAX, il faut que je la requête automatiquement sans
+          intervention de l'utilisateur --> javascript bonjour !
+          REMARQUE : pour automatiser les récupérations, soit je déclenche
+          suite à la réception de la notif de subscription, soit je traite
+          en JS (serviceworker etc.)
+
+
+
+    - [ ] Subscription fitbit integration
+        Permet de recevoir une requête POST de Fitbit sur un endpoint
+        public pour être notifié qu'un utilisateur a de nouvelles données
+        dispo.
+
+        ATTENTION : https://dev.fitbit.com/build/reference/web-api/developer-guide/using-subscriptions/#Responding-to-a-Notification
+
+        - [ ] Create a web service endpoint that can receive the HTTPS POST
+              notifications described in Notifications. Make sure this endpoint
+              is accessible from fitbit.com servers.
+
+        - [x] Configure a subscriber to point to this endpoint as described in
+              Configure a Subscriber.
+
+        - [ ] Verify your subscriber endpoint as described in Verify a
+              Subscriber. This will require adding code to respond correctly to
+              a verification code.
+
+        - [ ] Add subscriptions as described in Add a Subscription.
+
+
 
 
 - [ ] Mettre en place le dashboard utilisateur (check templates).
@@ -171,6 +215,7 @@ TODO - INCOMING
 
 CHANGELOG
 =========
+
 
 - [x] solutionner le problème lors de requêtes provenant d'utilisateurs
     différents

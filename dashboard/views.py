@@ -6,7 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 
 from fitapp.decorators import fitbit_integration_warning
+from . import utils
 from .utils import retrieve_fitbit_data
+
 
 
 @fitbit_integration_warning(msg="Integrate your account with Fitbit!")
@@ -45,7 +47,8 @@ def fitbit_subscription(request):
     # Answer to Fitbit within 5s (see doc)
 
     # Authenticate the right user (if valid, returns ~User~ object, ~None~ otherwise).
-    user = authenticate(username='Anais', password='mamounia31')
+    password = utils.get_setting('ANAIS_PASSWORD')
+    user = authenticate(username='Anais', password=password)
 
     # Fitbit request parameters
     category = 'activities'

@@ -1,10 +1,54 @@
 import simplejson as json
 import fitapp
 
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponse
+
 from fitapp.models import UserFitbit, TimeSeriesData, TimeSeriesDataType
 from fitbit.exceptions import (HTTPUnauthorized, HTTPForbidden, HTTPConflict,
                                HTTPServerError)
+
+
+# TEMP 
+# for testing with dashboard.views.fitbit_subscription
+# with password stored in .env file
+def get_setting(name, use_defaults=False):
+    """Retrieves the specified setting from the settings file.
+
+    If the setting is not found, raise an ImproperlyConfigured exception.
+    """
+    if hasattr(settings, name):
+        return _verified_setting(name)
+    msg = f"{name} must be specified in your settings"
+    raise ImproperlyConfigured(msg)
+
+
+# TEMP 
+# for testing with dashboard.views.fitbit_subscription
+# with password stored in .env file
+def _verified_setting(name):
+    result = getattr(settings, name)
+    if name == 'FITAPP_SUBSCRIPTIONS':
+        # Check that the subscription list is valid
+        try:
+            items = result.items()
+        except AttributeError:
+            msg = '{} must be a dict or an OrderedDict'.format(name)
+            raise ImproperlyConfigured(msg)
+        # Only make one query, which will be cached for later use
+        all_tsdt = list(TimeSeriesDataType.objects.all())
+        for cat, res in items:
+            tsdts = list(filter(lambda t: t.get_category_display() == cat, all_tsdt))
+            if not tsdts:
+                msg = '{} is an invalid category'.format(cat)
+                raise ImproperlyConfigured(msg)
+            all_cat_res = set(map(lambda tsdt: tsdt.resource, tsdts))
+            if set(res) & all_cat_res != set(res):
+                msg = '{0} resources are invalid for the {1} category'.format(
+                    list(set(res) - (set(res) & all_cat_res)), cat)
+                raise ImproperlyConfigured(msg)
+    return result
 
 
 

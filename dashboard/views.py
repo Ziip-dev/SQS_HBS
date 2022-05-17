@@ -34,11 +34,13 @@ def home(request):
 def fitbit_subscription(request):
     # will be https://xp.caprover-root.ocas-phd.fr/subscription/
 
-    # Reveive Fitbit webhook via POST request
-    # Locally simulated by a `curl -X POST http://127.0.0.1:7000/subscription/` for now
+    # TODO #5 Reveive Fitbit webhook via POST request
+    # TEMP: locally simulated by a `curl -X POST http://127.0.0.1:7000/subscription/` for now
 
     # Verify subscriber endpoint
-    # --> add code to respond correctly to a verification code (maybe managed by fitapp??)
+    # --> fitapp.views.update
+    # --> also see fitapp.tasks.subscribe/unsuscribe/get_time_series_data
+    #     for automated management of subscriptions
 
     # Check X-Fitbit-Signature --> peut-être déjà intégré dans fitapp
     # https://dev.fitbit.com/build/reference/web-api/developer-guide/best-practices/#Subscriber-Security
@@ -61,5 +63,7 @@ def fitbit_subscription(request):
     user_data = retrieve_fitbit_data(
         user, category, resource, base_date=base_date, period=period
     )
+
+    # TODO #1 I  really need to write the data in the database at some point
 
     return user_data

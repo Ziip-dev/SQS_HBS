@@ -8,7 +8,7 @@ with personalized recommendations to increase their physical activity level.
 FEATURES
 ========
 
-TODO/doc - features
+TODO/doc #2 - features
 
 
 REQUIREMENTS
@@ -77,7 +77,7 @@ Deployment
 USAGE
 =====
 
-TODO/doc - usage
+TODO/doc #3 - usage
 
 
 LICENSE
@@ -107,8 +107,10 @@ For deployment in production, remember to delete the lock file in order to
 switch to the ``pyproject-prod.toml`` dependencies.
 
 
-TODO - INCOMING
-===============
+ROADMAP
+=======
+
+- [ ] Passage sur les données intraday:
 
 --> il me faut les intraday, pas le choix pour faire du suivi journalier.
     Bien que la fonction préparant la requête existe dans fitapp.api,
@@ -138,68 +140,18 @@ TODO - INCOMING
          +--------------------------+         +-----------------------------------+
 
 
-- [ ] Passer sur les données intraday :
 
-    - [x] fitbit intraday data request form!
-        - possible with client or server application.
-        - refresh token only supported with Authorization Code Grant flow.
+- SQLite / Celery:
+  En cas de fonctionnement concurrent problématique.
+  "If using sqlite, create a celery configuration that prevents the
+  fitapp celery tasks from being executed concurrently."
 
-    - [ ] test Anais sur l'endpoint intraday --> méthode à modifier d'abord
-
-
-
-- [ ] Changer sqlite ou définir config Celery pour fonctionnement concurrent
-      "If using sqlite, create a celery configuration that prevents the fitapp
-       celery tasks from being executed concurrently."
-       Celery is required only for managing queued tasks for subscripiton??
-       C'est à moi d'intégrer Celery dans ma webapp si je veux en gros...
-       Pour l'instant on va écrire dans la base de données hein.
+  Celery is required only for managing queued tasks for subscripiton?
+  C'est à moi d'intégrer Celery dans ma webapp si je veux en gros.
+  Pour l'instant on va simplement écrire dans la base de données hein...
 
 
-
-- [ ] Alimenter la BDD :
-
-    - [x] requête manuelle OK:
-      http://127.0.0.1:7000/fitbit/get_data/activities/minutesSedentary/?base_date=2022-04-01&period=1d
-
-    - [x] requête générée automatiquement OK:
-      <a href="{% url 'fitbit-data' category='activities' resource='minutesSedentary' %}?base_date=2022-04-01&period=1d"></a>
-
-    - [x] pas la peine de variabiliser les paramètres des requêtes `base_date`
-      et `period` car les requêtes seront gérées automatiquement et non par des
-      liens.
-
-    - [ ] vu que la view de `fitapp` permettant de récupérer les données est
-          une vue AJAX, il faut que je la requête automatiquement sans
-          intervention de l'utilisateur --> javascript bonjour !
-          REMARQUE : pour automatiser les récupérations, soit je déclenche
-          suite à la réception de la notif de subscription, soit je traite
-          en JS (serviceworker etc.)
-
-
-
-    - [ ] Subscription fitbit integration
-        Permet de recevoir une requête POST de Fitbit sur un endpoint
-        public pour être notifié qu'un utilisateur a de nouvelles données
-        dispo.
-
-        ATTENTION : https://dev.fitbit.com/build/reference/web-api/developer-guide/using-subscriptions/#Responding-to-a-Notification
-
-        - [ ] Create a web service endpoint that can receive the HTTPS POST
-              notifications described in Notifications. Make sure this endpoint
-              is accessible from fitbit.com servers.
-
-        - [x] Configure a subscriber to point to this endpoint as described in
-              Configure a Subscriber.
-
-        - [ ] Verify your subscriber endpoint as described in Verify a
-              Subscriber. This will require adding code to respond correctly to
-              a verification code.
-
-        - [ ] Add subscriptions as described in Add a Subscription.
-
-
-
+- [ ] Écrire les résultats de requête dans les bases de données.
 
 - [ ] Mettre en place le dashboard utilisateur (check templates).
 
@@ -216,26 +168,28 @@ TODO - INCOMING
 CHANGELOG
 =========
 
+- Basculer sur un système de suivi par issues + pull request,
+  le README va devenir plus gros que le code sinon...
 
-- [x] solutionner le problème lors de requêtes provenant d'utilisateurs
+
+- Solutionner le problème lors de requêtes provenant d'utilisateurs
     différents
 
-    - [x] déclaration d'une Server App sur mon compte fitbit.
+    - déclaration d'une Server App sur mon compte fitbit.
 
-    - [x] tester si je récupère les données non-intraday pour Ines ET Anais.
+    - tester si je récupère les données non-intraday pour Ines ET Anais.
 
 
-
-- [x] Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
+- Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
   déclarée.
 
-  - [x] mettre en place l'authentification des utilisateurs pour accéder
+  - mettre en place l'authentification des utilisateurs pour accéder
     aux views fitbit.
 
-      - [x] livereload server for fast development of templates
+      - livereload server for fast development of templates
         --> cancelled, trop de bugs lors des livereloads.
 
-      - [x] WhiteNoise setup for static files serving.
+      - WhiteNoise setup for static files serving.
 
 
 

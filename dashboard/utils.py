@@ -1,16 +1,21 @@
-import simplejson as json
 import fitapp
-
+import simplejson as json
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponse
 
-from fitapp.models import UserFitbit, TimeSeriesData, TimeSeriesDataType
-from fitbit.exceptions import (HTTPUnauthorized, HTTPForbidden, HTTPConflict,
-                               HTTPServerError)
+# trunk-ignore(flake8/F401)
+from fitapp.models import TimeSeriesData, TimeSeriesDataType, UserFitbit
+from fitbit.exceptions import (
+    HTTPConflict,
+    HTTPForbidden,
+    HTTPServerError,
+    HTTPUnauthorized,
+)
 
 
-# TEMP 
+# TEMP
+#########################################################################
 # for testing with dashboard.views.fitbit_subscription
 # with password stored in .env file
 def get_setting(name, use_defaults=False):
@@ -24,45 +29,47 @@ def get_setting(name, use_defaults=False):
     raise ImproperlyConfigured(msg)
 
 
-# TEMP 
-# for testing with dashboard.views.fitbit_subscription
-# with password stored in .env file
 def _verified_setting(name):
     result = getattr(settings, name)
-    if name == 'FITAPP_SUBSCRIPTIONS':
+    if name == "FITAPP_SUBSCRIPTIONS":
         # Check that the subscription list is valid
         try:
             items = result.items()
         except AttributeError:
-            msg = '{} must be a dict or an OrderedDict'.format(name)
+            msg = "{} must be a dict or an OrderedDict".format(name)
             raise ImproperlyConfigured(msg)
         # Only make one query, which will be cached for later use
         all_tsdt = list(TimeSeriesDataType.objects.all())
         for cat, res in items:
             tsdts = list(filter(lambda t: t.get_category_display() == cat, all_tsdt))
             if not tsdts:
-                msg = '{} is an invalid category'.format(cat)
+                msg = "{} is an invalid category".format(cat)
                 raise ImproperlyConfigured(msg)
             all_cat_res = set(map(lambda tsdt: tsdt.resource, tsdts))
             if set(res) & all_cat_res != set(res):
-                msg = '{0} resources are invalid for the {1} category'.format(
-                    list(set(res) - (set(res) & all_cat_res)), cat)
+                msg = "{0} resources are invalid for the {1} category".format(
+                    list(set(res) - (set(res) & all_cat_res)), cat
+                )
                 raise ImproperlyConfigured(msg)
     return result
 
+
+#########################################################################
 
 
 def make_response(code=None, objects=[]):
     """Helper method to generate a response"""
 
     data = {
-        'meta': {'total_count': len(objects), 'status_code': code},
-        'objects': objects,
+        "meta": {"total_count": len(objects), "status_code": code},
+        "objects": objects,
     }
     return HttpResponse(json.dumps(data))
 
 
-def retrieve_fitbit_data(user, category, resource, base_date=None, end_date=None, period=None):
+def retrieve_fitbit_data(
+    user, category, resource, base_date=None, end_date=None, period=None
+):
     """Function adapted from fitapp.views.get_data so it can be called directly
     from the dashboard.views.fitbit_subscription view instead of an AJAX request.
 
@@ -121,12 +128,15 @@ def retrieve_fitbit_data(user, category, resource, base_date=None, end_date=None
 
     try:
         resource_type = TimeSeriesDataType.objects.get(
-            category=getattr(TimeSeriesDataType, category), resource=resource)
+            category=getattr(TimeSeriesDataType, category), resource=resource
+        )
+
+    # trunk-ignore(flake8/E722)
     except:
         return make_response(104)
 
     # Check if the user has a subscribed fitbit integration
-    fitapp_subscribe = fitapp.utils.get_setting('FITAPP_SUBSCRIBE')
+    fitapp_subscribe = fitapp.utils.get_setting("FITAPP_SUBSCRIBE")
     if not user.is_authenticated or not user.is_active:
         return make_response(101)
     if not fitapp_subscribe and not fitapp.utils.is_integrated(user):
@@ -134,9 +144,9 @@ def retrieve_fitbit_data(user, category, resource, base_date=None, end_date=None
 
     # Select the correct endpoint regarding the retrieved parameters
     if period and not end_date:
-        form = fitapp.forms.PeriodForm({'base_date': base_date, 'period': period})
+        form = fitapp.forms.PeriodForm({"base_date": base_date, "period": period})
     elif end_date and not period:
-        form = fitapp.forms.RangeForm({'base_date': base_date, 'end_date': end_date})
+        form = fitapp.forms.RangeForm({"base_date": base_date, "end_date": end_date})
     else:
         # either end_date or period, but not both, must be specified.
         return make_response(104)
@@ -145,17 +155,15 @@ def retrieve_fitbit_data(user, category, resource, base_date=None, end_date=None
     if not fitbit_data:
         return make_response(104)
 
-
     # À bouger dans une autre fonction
     ### Request data directly from the database if the user is suscribed to automated Fitbit updates.
-    if fitapp_subscribe:
-        date_range = normalize_date_range(request, fitbit_data)
-        existing_data = TimeSeriesData.objects.filter(
-            user=user, resource_type=resource_type, **date_range)
-        simplified_data = [{'value': d.value, 'dateTime': d.string_date()}
-                           for d in existing_data]
-        return make_response(100, simplified_data)
-
+    # if fitapp_subscribe:
+    #     date_range = normalize_date_range(request, fitbit_data)
+    #     existing_data = TimeSeriesData.objects.filter(
+    #         user=user, resource_type=resource_type, **date_range)
+    #     simplified_data = [{'value': d.value, 'dateTime': d.string_date()}
+    #                        for d in existing_data]
+    #     return make_response(100, simplified_data)
 
     ### Request data through the API and handle related errors.
     fbuser = UserFitbit.objects.get(user=user)
@@ -169,6 +177,7 @@ def retrieve_fitbit_data(user, category, resource, base_date=None, end_date=None
         return make_response(105)
     except HTTPServerError:
         return make_response(106)
+    # trunk-ignore(flake8/E722)
     except:
         # Other documented exceptions include TypeError, ValueError,
         # HTTPNotFound, and HTTPBadRequest. But they shouldn't occur, so we'll
@@ -178,15 +187,35 @@ def retrieve_fitbit_data(user, category, resource, base_date=None, end_date=None
     return make_response(100, data)
 
 
-
 def test_write_user_data():
     # write to BDD
+
+    # TimeSeriesData.objects.create(
+    #     user=self.user,
+    #     resource_type=TimeSeriesDataType.objects.get(
+    #         category=TimeSeriesDataType.activities, resource='steps'),
+    #     date=steps[0]['dateTime'],
+    #     value=steps[0]['value']
+    # )
+
+    # for datum in data:
+    #     # Create new record or update existing record
+    #     date = parser.parse(datum['dateTime'])
+    #     tsd, created = TimeSeriesData.objects.get_or_create(
+    #         user=fbuser.user, resource_type=_type, date=date)
+    #     tsd.value = datum['value']
+    #     tsd.save()
 
     pass
 
 
-
 def test_read_user_data():
     # read from BDD
-    
+
+    # for tsd in TimeSeriesData.objects.filter(user=self.user, date=date):
+
+    # TimeSeriesData.objects.filter(user=self.user, date=date).count(),
+
+    # activities = TimeSeriesDataType.activities
+
     pass

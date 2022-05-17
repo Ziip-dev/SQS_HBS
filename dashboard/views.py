@@ -1,14 +1,13 @@
 # dashboard/views.py
 
-from django.shortcuts import render, redirect, HttpResponse
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
-
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from fitapp.decorators import fitbit_integration_warning
+
 from . import utils
 from .utils import retrieve_fitbit_data
-
 
 
 @fitbit_integration_warning(msg="Integrate your account with Fitbit!")
@@ -25,7 +24,7 @@ def home(request):
         # test_write_user_data()
 
         return render(request, "dashboard/home.html")
-        
+
     else:
         return redirect("login")
 
@@ -46,19 +45,21 @@ def fitbit_subscription(request):
 
     # Answer to Fitbit within 5s (see doc)
 
+    # TEMP with anais hardcoded for single user testing
     # Authenticate the right user (if valid, returns ~User~ object, ~None~ otherwise).
-    password = utils.get_setting('ANAIS_PASSWORD')
-    user = authenticate(username='Anais', password=password)
+    password = utils.get_setting("ANAIS_PASSWORD")
+    user = authenticate(username="Anais", password=password)
 
     # Fitbit request parameters
-    category = 'activities'
-    resource = 'minutesSedentary'
-    base_date = '2022-04-01'
-    period = '1d'
+    category = "activities"
+    resource = "minutesSedentary"
+    base_date = "2022-04-01"
+    period = "1d"
 
     # Retrieve Fitbit data using a custom utils function based on the
     # fitapp.views.get_data request constructor
-    user_data = retrieve_fitbit_data(user, category, resource, base_date=base_date, period=period)
-
+    user_data = retrieve_fitbit_data(
+        user, category, resource, base_date=base_date, period=period
+    )
 
     return user_data

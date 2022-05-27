@@ -155,7 +155,7 @@ def retrieve_fitbit_data(
     if not fitbit_data:
         return make_response(104)
 
-    # À bouger dans une autre fonction
+    # À bouger dans une autre fonction ?
     ### Request data directly from the database if the user is suscribed to automated Fitbit updates.
     # if fitapp_subscribe:
     #     date_range = normalize_date_range(request, fitbit_data)

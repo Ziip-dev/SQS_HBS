@@ -128,8 +128,8 @@ ROADMAP
 CHANGELOG
 =========
 
-- Intégrer Celery pour bénéficier des tasks asynchrones déjà écrites dans fitapp,
-  changer le database backend pour gérer efficacement la concurrence
+- Intégrer Celery pour bénéficier des tasks asynchrones déjà écrites dans
+  fitapp, changer le database backend pour gérer efficacement la concurrence
   et passer sur un execution pool basé sur des green threads.
 
 

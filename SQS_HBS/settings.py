@@ -196,6 +196,4 @@ CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
 # CELERY_RESULT_BACKEND = "django-db"
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["json", "pickle"]
-# CELERY_WORKER_CONCURRENCY = 1
-# os.environ.setdefault('C_FORCE_ROOT', 'true')  # new
 # CELERY_ALWAYS_EAGER = True

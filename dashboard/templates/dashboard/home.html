@@ -1,38 +1,34 @@
 <!-- dashboard/home.html -->
 
-{% extends 'dashboard/base.html' %}
-
-{% block title %}
-Mon Tableau de Bord
-{% endblock %}
-
-{% block content %}
+{% extends 'dashboard/base.html' %} {% block title %} Mon Tableau de Bord
+{%endblock %} {% block content %}
 <!-- from here we are in a <div class="container"> -->
-    
-    <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
-    <br>
 
-    {% if request.user|is_integrated_with_fitbit %}
+<p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
+<br />
 
-        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
-        <br>
-        <br>
-        <h2 class="subtitle is-3">Test d'écriture des données</h2>
-        <p>On peut tester la <a href="{% url 'fitbit-data' category='activities' resource='minutesSedentary' %}?base_date=2022-04-01&period=1d">récupération de données</a> !</p>
-        <p>Le {{ base_date }}, tu as été sédentaire pendant {{ minutesSedentary }} minutes.
+{% if request.user|is_integrated_with_fitbit %}
 
-    {% else %}
+<p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
+<br />
+<br />
+<h2 class="subtitle is-3">Test d'écriture des données</h2>
+<p>
+  On peut tester la
+  <a
+    href="{% url 'fitbit-data' category='activities' resource='minutesSedentary' %}?base_date=2022-04-01&period=1d"
+    >récupération de données</a
+  >
+  !
+</p>
 
-        Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+{% else %} Il faut commencer par
+<a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+{%endif%}
+<br />
+<br />
+<div>
+  <a href="{% url 'logout' %}">Logout</a>
+</div>
 
-
-    {% endif %}
-
-    <br>
-    <br>
-    <div>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
-        
-        
 {% endblock %}

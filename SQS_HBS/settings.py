@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "fitapp",
     "django_simple_bulma",
     "widget_tweaks",
+    "silk",
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = "SQS_HBS.urls"
@@ -100,10 +102,20 @@ WSGI_APPLICATION = "SQS_HBS.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("DB_HOST"),
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASS"),
     }
 }
 
@@ -130,9 +142,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fr"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "CET"
 
 USE_I18N = True
 
@@ -174,3 +186,16 @@ LOGIN_REDIRECT_URL = "home"
 
 # Custom settings for django-simple-bulma
 BULMA_SETTINGS = {}
+
+
+# Celery configuration - uppercase instead of lowercase, and start with CELERY_
+CELERY_TIMEZONE = "CET"
+# CELERY_BROKER_URL = "amqp://admin:mypass@localhost:5672"
+CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
+# CELERY_RESULT_BACKEND = "rpc://"
+# CELERY_RESULT_BACKEND = "django-db"
+CELERY_TASK_SERIALIZER = "pickle"
+CELERY_ACCEPT_CONTENT = ["json", "pickle"]
+# CELERY_WORKER_CONCURRENCY = 1
+# os.environ.setdefault('C_FORCE_ROOT', 'true')  # new
+# CELERY_ALWAYS_EAGER = True

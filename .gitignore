@@ -151,3 +151,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Miscellaneous
+db.json.bkp
+db.sqlite3.bkp

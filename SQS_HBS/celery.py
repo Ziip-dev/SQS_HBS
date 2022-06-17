@@ -12,5 +12,4 @@ app = Celery("SQS_HBS")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # from django.conf import settings
-# app.autodiscover_tasks(lambda: settings.INSTALLED_APPS, force=True)
 app.autodiscover_tasks()

@@ -110,48 +110,8 @@ switch to the ``pyproject-prod.toml`` dependencies.
 ROADMAP
 =======
 
-- [ ] Passage sur les données intraday:
-
---> il me faut les intraday, pas le choix pour faire du suivi journalier.
-    Bien que la fonction préparant la requête existe dans fitapp.api,
-    il faut modifier fitapp.utils.get_fitbit_data() pour pouvoir call
-    fitapp.api.intraday_time_series() à l'instar de fitapp.api.time_series()
-    vérifier dans les forks avant tout:
-
-::
-
-                            +-------------------------+
-                            | fitapp.views.get_data() |
-                            +-------------------------+
-                                         |
-                                         |
-                                        \ /
-                                         '
-                         +--------------------------------+
-                         | fitapp.utils.get_fitbit_data() |
-                         +--------------------------------+
-                                         |
-                            _____________|______________
-                           |                           |
-                          \ /                         \ /
-                           '                           '
-         +--------------------------+         +-----------------------------------+
-         | fitapp.api.time_series() |         | fitapp.api.intraday_time_series() |
-         +--------------------------+         +-----------------------------------+
-
-
-
-- SQLite / Celery:
-  En cas de fonctionnement concurrent problématique.
-  "If using sqlite, create a celery configuration that prevents the
-  fitapp celery tasks from being executed concurrently."
-
-  Celery is required only for managing queued tasks for subscripiton?
-  C'est à moi d'intégrer Celery dans ma webapp si je veux en gros.
-  Pour l'instant on va simplement écrire dans la base de données hein...
-
-
-- [ ] Écrire les résultats de requête dans les bases de données.
+- [ ] Check X-Fitbit-Signature --> peut-être déjà intégré dans fitapp
+    https://dev.fitbit.com/build/reference/web-api/developer-guide/best-practices/#Subscriber-Security
 
 - [ ] Mettre en place le dashboard utilisateur (check templates).
 
@@ -167,6 +127,11 @@ ROADMAP
 
 CHANGELOG
 =========
+
+- Intégrer Celery pour bénéficier des tasks asynchrones déjà écrites dans fitapp,
+  changer le database backend pour gérer efficacement la concurrence
+  et passer sur un execution pool basé sur des green threads.
+
 
 - Basculer sur un système de suivi par issues + pull request,
   le README va devenir plus gros que le code sinon...
@@ -195,6 +160,18 @@ CHANGELOG
 
 DEBUG NOTES
 ===========
+
+def test_read_user_data():
+    # read from BDD
+
+    # for tsd in TimeSeriesData.objects.filter(user=self.user, date=date):
+
+    # TimeSeriesData.objects.filter(user=self.user, date=date).count(),
+
+    # activities = TimeSeriesDataType.activities
+
+    pass
+
 
 CLI
 ---

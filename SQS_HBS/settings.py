@@ -41,6 +41,8 @@ DEBUG = True
 
 # SECURITY WARNING: this can also be put in .env for production
 ALLOWED_HOSTS = ["*"]
+
+# SECURITY WARNING: this is only for test purposes with localtunnel
 CSRF_TRUSTED_ORIGINS = ["https://sqshbs-subscription.loca.lt"]
 
 

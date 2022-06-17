@@ -45,25 +45,25 @@ def fitbit_subscription(request):
     # Check X-Fitbit-Signature --> peut-être déjà intégré dans fitapp
     # https://dev.fitbit.com/build/reference/web-api/developer-guide/best-practices/#Subscriber-Security
 
-    # Answer to Fitbit within 5s (see doc)
-
     # TEMP with anais hardcoded for single user testing
     # Authenticate the right user (if valid, returns ~User~ object, ~None~ otherwise).
-    password = utils.get_setting("ANAIS_PASSWORD")
-    user = authenticate(username="Anais", password=password)
+    # password = utils.get_setting("ANAIS_PASSWORD")
+    # user = authenticate(username="Anais", password=password)
 
     # Fitbit request parameters
-    category = "activities"
-    resource = "minutesSedentary"
-    base_date = "2022-04-01"
-    period = "1d"
+    # category = "activities"
+    # resource = "minutesSedentary"
+    # base_date = "2022-04-01"
+    # period = "1d"
 
     # Retrieve Fitbit data using a custom utils function based on the
     # fitapp.views.get_data request constructor
-    user_data = retrieve_fitbit_data(
-        user, category, resource, base_date=base_date, period=period
-    )
+    # user_data = retrieve_fitbit_data(
+    #     user, category, resource, base_date=base_date, period=period
+    # )
 
     # TODO #1 I  really need to write the data in the database at some point
+    # print(vars(user_data))
 
-    return user_data
+    # return user_data
+    pass

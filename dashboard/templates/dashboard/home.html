@@ -11,17 +11,15 @@
 
 <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
 <br />
-<br />
-<h2 class="subtitle is-3">Test d'écriture des données</h2>
-<p>
-  On peut tester la
-  <a
-    href="{% url 'fitbit-data' category='activities' resource='minutesSedentary' %}?base_date=2022-04-01&period=1d"
-    >récupération de données</a
-  >
-  !
-</p>
 
+<h2 class="subtitle is-3">Reading data test</h2>
+Okay <b>{{ tsds.0.user }}</b>, here is your data for the
+<b>{{ tsds.0.date }}</b>: <br />
+{% for tsd in tsds %}<br />
+{{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
+{% endfor %}
+
+<br />
 {% else %} Il faut commencer par
 <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
 {%endif%}

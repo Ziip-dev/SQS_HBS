@@ -161,18 +161,6 @@ CHANGELOG
 DEBUG NOTES
 ===========
 
-def test_read_user_data():
-    # read from BDD
-
-    # for tsd in TimeSeriesData.objects.filter(user=self.user, date=date):
-
-    # TimeSeriesData.objects.filter(user=self.user, date=date).count(),
-
-    # activities = TimeSeriesDataType.activities
-
-    pass
-
-
 CLI
 ---
 

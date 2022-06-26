@@ -20,6 +20,7 @@ django-silk = "^4.3.0"
 whitenoise = "^6.0.0"
 eventlet = "^0.33.1"
 psycopg2-binary = "^2.9.3"
+django-pwa = {git = "https://github.com/silviolleite/django-pwa", rev = "4eb4ae6"}
 django-fitbit = {git = "https://github.com/Ziip-dev/django-fitbit.git"}
 
 [tool.poetry.dev-dependencies]

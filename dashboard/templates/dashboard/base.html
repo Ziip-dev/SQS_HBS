@@ -1,10 +1,11 @@
 <!-- dashboard/base.html -->
 
-{% load static %}
+{% load static %} {% load pwa %}
 
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <!-- Usual meta tags -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,13 +14,17 @@
       type="image/png"
       href="{% static 'favicon.png' %}"
     />
+    <!-- Progressive Web App - PWA -->
+    {% progressive_web_app_meta %} {% comment %}
     <link rel="manifest" href="{% static 'dashboard/manifest.json' %}" />
+    {% endcomment %} {% comment %}
     <link
       rel="apple-touch-icon"
       href="{% static 'dashboard/images/icons/icon-192x192.png' %}"
     />
+    {% endcomment %}
 
-    <!-- Include the Bulma CSS framework for styling -->
+    <!-- Bulma CSS framework -->
     {% load django_simple_bulma %} {% bulma %} {% comment %} {% font_awesome %}
     {% endcomment %}
 

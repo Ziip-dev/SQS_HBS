@@ -151,7 +151,8 @@ dmypy.json
 .pyre/
 
 # Miscellaneous
-/static/
+/staticfiles/
 pyproject.toml
 relax_messages.txt
 generate-sw.js
+manifest.json.BKP

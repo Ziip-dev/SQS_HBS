@@ -49,18 +49,19 @@ CSRF_TRUSTED_ORIGINS = ["https://sqshbs-subscription.loca.lt"]
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",  # https://github.com/evansd/whitenoise/blob/master/docs/django.rst#5-using-whitenoise-in-development
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",  # for development https://github.com/evansd/whitenoise/blob/main/docs/django.rst#5-using-whitenoise-in-development
     "django.contrib.staticfiles",
     "dashboard.apps.DashboardConfig",
     "fitapp",
     "django_simple_bulma",
     "widget_tweaks",
     "silk",
+    "pwa",
 ]
 
 MIDDLEWARE = [
@@ -154,9 +155,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 STATIC_URL = "static/"
 
-STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [Path(BASE_DIR, "static")]
 
 STATICFILES_FINDERS = [
     # default ones
@@ -166,17 +169,12 @@ STATICFILES_FINDERS = [
     "django_simple_bulma.finders.SimpleBulmaFinder",
 ]
 
-# WhiteNoise configuration for serving static files
-# compression + caching
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-# compression without caching
+# WhiteNoise configuration for serving static files (compression + no cache)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
@@ -197,3 +195,42 @@ CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["json", "pickle"]
 # CELERY_ALWAYS_EAGER = True
+
+
+# Django-PWA configuration
+PWA_APP_NAME = "Self-Quantification System for Health Behavior Support"
+PWA_APP_DESCRIPTION = ""
+# PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_THEME_COLOR = "#ff0000"
+# PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_BACKGROUND_COLOR = "#0000ff"
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_ORIENTATION = "portrait"
+PWA_APP_START_URL = "/"
+PWA_APP_SCOPE = "/"
+PWA_APP_STATUS_BAR_COLOR = "default"
+PWA_APP_ICONS = [
+    {"src": "/static/images/icons/icon_panda-192x192.png", "sizes": "192x192"},
+    {"src": "/static/images/icons/icon_panda-256x256.png", "sizes": "256x256"},
+    {"src": "/static/images/icons/icon_panda-384x384.png", "sizes": "384x384"},
+    {"src": "/static/images/icons/icon_panda-512x512.png", "sizes": "512x512"},
+    {
+        "src": "/static/images/icons/maskable_icon_panda_x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable",
+    },
+]
+PWA_APP_ICONS_APPLE = [
+    {"src": "/static/images/icons/icon_panda-192x192.png", "sizes": "192x192"}
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        "src": "/static/images/icons/icon_panda-512x512.png",
+        "media": "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
+    }
+]
+PWA_APP_LANG = "fr"
+
+# DEBUG
+PWA_APP_DEBUG = True

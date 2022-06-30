@@ -218,7 +218,7 @@ PWA_APP_ICONS = [
         "src": "/static/images/icons/maskable_icon_panda_x192.png",
         "sizes": "192x192",
         "type": "image/png",
-        "purpose": "any maskable",
+        "purpose": "maskable",
     },
 ]
 PWA_APP_ICONS_APPLE = [
@@ -234,3 +234,6 @@ PWA_APP_LANG = "fr"
 
 # DEBUG
 PWA_APP_DEBUG = True
+
+# Service worker
+# PWA_SERVICE_WORKER_PATH = Path(BASE_DIR, "SQS_HBS", "sw.js")

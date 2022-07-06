@@ -81,7 +81,7 @@ ROOT_URLCONF = "SQS_HBS.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [Path(BASE_DIR, "SQS_HBS", "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -102,13 +102,6 @@ WSGI_APPLICATION = "SQS_HBS.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 DATABASES = {
     "default": {
@@ -159,7 +152,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [Path(BASE_DIR, "static")]
+STATICFILES_DIRS = [Path(BASE_DIR, "SQS_HBS", "static")]
 
 STATICFILES_FINDERS = [
     # default ones

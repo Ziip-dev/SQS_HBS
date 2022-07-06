@@ -1,8 +1,11 @@
 <!-- dashboard/home.html -->
 
-{% extends 'dashboard/base.html' %} {% block title %} Mon Tableau de Bord
-{%endblock %} {% block content %}
-<!-- from here we are in a <div class="container"> -->
+{% extends 'base.html' %}
+
+{% block title %} Mon Tableau de Bord {% endblock %}
+
+{% block content %}
+<!-- from here we are in a Bulma <div class="container"> -->
 
 <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
 <br />
@@ -15,6 +18,7 @@
 <h2 class="subtitle is-3">Reading data test</h2>
 Okay <b>{{ tsds.0.user }}</b>, here is your data for the
 <b>{{ tsds.0.date }}</b>: <br />
+
 {% for tsd in tsds %}<br />
 {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
 {% endfor %}
@@ -22,7 +26,9 @@ Okay <b>{{ tsds.0.user }}</b>, here is your data for the
 <br />
 {% else %} Il faut commencer par
 <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
-{%endif%}
+
+{% endif %}
+
 <br />
 <br />
 <div>

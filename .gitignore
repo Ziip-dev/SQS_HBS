@@ -151,6 +151,7 @@ dmypy.json
 .pyre/
 
 # Miscellaneous
+.trunk/logs
 /staticfiles/
 pyproject.toml
 relax_messages.txt

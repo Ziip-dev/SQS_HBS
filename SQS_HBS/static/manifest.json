@@ -1,0 +1,31 @@
+{
+  "name": "Self-Quantification System for Health Behavior Support",
+  "short_name": "SQS-HBS",
+  "description": "Prototype app for PhD experiment",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "dir": "ltr",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#ff0000",
+  "background_color": "#0000ff",
+  "icons": [
+    {
+      "src": "icons/icon_panda-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon_panda-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable_icon_panda_x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

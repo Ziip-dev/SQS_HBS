@@ -1,6 +1,7 @@
 <!-- SQS_HBS/base.html -->
 
 {% load static %}
+{% load pwa %}
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -15,11 +16,12 @@
       href="{% static 'favicon.png' %}"
     />
     <!-- Progressive Web App - PWA -->
-    <link rel="manifest" href="{% static 'manifest.json' %}" />
+    {% progressive_web_app_meta %}
+    {% comment %} <link rel="manifest" href="{% static 'manifest.json' %}" />
     <link
       rel="apple-touch-icon"
       href="{% static 'icons/icon_panda-192x192.png' %}"
-    />
+    /> {% endcomment %}
 
     <!-- Bulma CSS framework -->
     {% load django_simple_bulma %} {% bulma %} {% comment %} {% font_awesome %}
@@ -41,21 +43,5 @@
       <div class="container">{% block content %}{% endblock content %}</div>
     </section>
 
-    {% block sw_script %}
-    <script type="text/javascript">
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-          .register("{% url 'sw.js' %}", { scope: "/" })
-          .then(function (reg) {
-            // registration ok
-            console.log("Registration succeeded! The scope is " + reg.scope);
-          })
-          .catch(function (error) {
-            // registration failed
-            console.log("Registration failed with " + error);
-          });
-      }
-    </script>
-    {% endblock %}
   </body>
 </html>

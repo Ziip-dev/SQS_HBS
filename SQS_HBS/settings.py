@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",  # for development https://github.com/evansd/whitenoise/blob/main/docs/django.rst#5-using-whitenoise-in-development
+    # for development https://github.com/evansd/whitenoise/blob/main/docs/django.rst#5-using-whitenoise-in-development
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "dashboard.apps.DashboardConfig",
     "fitapp",
@@ -176,10 +177,12 @@ LOGIN_REDIRECT_URL = "home"
 
 
 # Custom settings for django-simple-bulma
+# =======================================
 BULMA_SETTINGS = {}
 
 
 # Celery configuration - uppercase instead of lowercase, and start with CELERY_
+# =============================================================================
 CELERY_TIMEZONE = "CET"
 # CELERY_BROKER_URL = "amqp://admin:mypass@localhost:5672"
 CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
@@ -191,39 +194,49 @@ CELERY_ACCEPT_CONTENT = ["json", "pickle"]
 
 
 # Django-PWA configuration
+# ========================
 PWA_APP_NAME = "Self-Quantification System for Health Behavior Support"
-PWA_APP_DESCRIPTION = ""
+PWA_APP_DESCRIPTION = "Prototype app for PhD experiment"
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_ORIENTATION = "portrait-primary"
+PWA_APP_DIR = "ltr"
+PWA_APP_LANG = "fr"
+PWA_APP_START_URL = "/"
+PWA_APP_SCOPE = "/"
 # PWA_APP_THEME_COLOR = '#0A0302'
 PWA_APP_THEME_COLOR = "#ff0000"
 # PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_BACKGROUND_COLOR = "#0000ff"
-PWA_APP_DISPLAY = "standalone"
-PWA_APP_ORIENTATION = "portrait"
-PWA_APP_START_URL = "/"
-PWA_APP_SCOPE = "/"
 PWA_APP_STATUS_BAR_COLOR = "default"
 PWA_APP_ICONS = [
-    {"src": "/static/images/icons/icon_panda-192x192.png", "sizes": "192x192"},
-    {"src": "/static/images/icons/icon_panda-256x256.png", "sizes": "256x256"},
-    {"src": "/static/images/icons/icon_panda-384x384.png", "sizes": "384x384"},
-    {"src": "/static/images/icons/icon_panda-512x512.png", "sizes": "512x512"},
     {
-        "src": "/static/images/icons/maskable_icon_panda_x192.png",
+        "src": "static/icons/icon_panda-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    },
+    {
+        "src": "static/icons/icon_panda-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    },
+    {
+        "src": "static/icons/maskable_icon_panda_x192.png",
         "sizes": "192x192",
         "type": "image/png",
-        "purpose": "maskable",
-    },
+        "purpose": "maskable"
+    }
 ]
 PWA_APP_ICONS_APPLE = [
-    {"src": "/static/images/icons/icon_panda-192x192.png", "sizes": "192x192"}
+    {
+        "src": "static/icons/icon_panda-192x192.png",
+        "sizes": "192x192"}
 ]
 PWA_APP_SPLASH_SCREEN = [
     {
-        "src": "/static/images/icons/icon_panda-512x512.png",
+        "src": "static/icons/icon_panda-512x512.png",
         "media": "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
     }
 ]
-PWA_APP_LANG = "fr"
 
 # DEBUG
 PWA_APP_DEBUG = True

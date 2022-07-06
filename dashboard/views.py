@@ -10,7 +10,7 @@ def home(request):
     if request.user.is_authenticated:
         # retrieve user data from database
         # now = datetime.datetime.now()  # parse to "YYYY-MM-DD"
-        tsds = TimeSeriesData.objects.filter(user=request.user, date="2022-06-20")
+        tsds = TimeSeriesData.objects.filter(user=request.user, date="2022-06-29")
 
         # for tsd in TimeSeriesData.objects.filter(user=self.user, date=date):
 

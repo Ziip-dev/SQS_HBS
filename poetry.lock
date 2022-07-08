@@ -216,24 +216,6 @@ type = "directory"
 url = "../django-fitbit"
 
 [[package]]
-name = "django-pwa"
-version = "1.0.10"
-description = ""
-category = "main"
-optional = false
-python-versions = "*"
-develop = false
-
-[package.dependencies]
-django = ">=1.8"
-
-[package.source]
-type = "git"
-url = "https://github.com/silviolleite/django-pwa"
-reference = "4eb4ae6"
-resolved_reference = "4eb4ae616f8671f85bb05156500d0814c6c4a3fe"
-
-[[package]]
 name = "django-silk"
 version = "4.3.0"
 description = "Silky smooth profiling for the Django Framework"
@@ -273,6 +255,17 @@ description = "Tweak the form field rendering in templates, not in python-level 
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "djhtml"
+version = "1.5.1"
+description = "Django/Jinja template indenter"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.extras]
+dev = ["black", "flake8", "isort", "nox", "pre-commit"]
 
 [[package]]
 name = "dnspython"
@@ -694,7 +687,7 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "cd4099c7759b3dd87d13a8c47dd938282605e22fb6e864ccb57213a5cf0689dd"
+content-hash = "1abcfc88b192e960dbb5ac1d7a8dd0fcac46150b8ee14957178ceca426209f23"
 
 [metadata.files]
 amqp = [
@@ -754,7 +747,6 @@ django-environ = [
     {file = "django_environ-0.8.1-py2.py3-none-any.whl", hash = "sha256:42593bee519a527602a467c7b682aee1a051c2597f98c45f4f4f44169ecdb6e5"},
 ]
 django-fitbit = []
-django-pwa = []
 django-silk = [
     {file = "django-silk-4.3.0.tar.gz", hash = "sha256:15ce316ac56d202bc7f0edab52d90d9b5282a41cbef9e38faab27e642d8a4e2b"},
     {file = "django_silk-4.3.0-py3-none-any.whl", hash = "sha256:b010e51d9a2408ca0471bc943941676950f1d2906af3d09f9ffcd56f232688fc"},
@@ -766,6 +758,9 @@ django-simple-bulma = [
 django-widget-tweaks = [
     {file = "django-widget-tweaks-1.4.12.tar.gz", hash = "sha256:9bfc5c705684754a83cc81da328b39ad1b80f32bd0f4340e2a810cbab4b0c00e"},
     {file = "django_widget_tweaks-1.4.12-py3-none-any.whl", hash = "sha256:fe6b17d5d595c63331f300917980db2afcf71f240ab9341b954aea8f45d25b9a"},
+]
+djhtml = [
+    {file = "djhtml-1.5.1.tar.gz", hash = "sha256:d3b9060e9c45e2a56125203f2508ae591aba41a2f14ed2fa8bafb99b0fc15eb3"},
 ]
 dnspython = [
     {file = "dnspython-2.2.1-py3-none-any.whl", hash = "sha256:a851e51367fb93e9e1361732c1d60dab63eff98712e503ea7d92e6eccb109b4f"},

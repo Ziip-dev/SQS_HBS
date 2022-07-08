@@ -1,5 +1,9 @@
 # dashboard/views.py
 
+from pathlib import Path
+
+from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from fitapp.decorators import fitbit_integration_warning
 from fitapp.models import TimeSeriesData
@@ -22,3 +26,9 @@ def home(request):
 
     else:
         return redirect("login")
+
+
+def service_worker(request):
+    sw_path = Path(settings.STATIC_ROOT, "sw.js")
+    response = HttpResponse(open(sw_path).read(), content_type="application/javascript")
+    return response

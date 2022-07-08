@@ -1,34 +1,36 @@
 <!-- dashboard/home.html -->
 
-{% extends 'dashboard/base.html' %} {% block title %} Mon Tableau de Bord
-{%endblock %} {% block content %}
-<!-- from here we are in a <div class="container"> -->
+{% extends 'base.html' %}
 
-<p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
-<br />
+{% block title %} Mon Tableau de Bord {% endblock %}
 
-{% if request.user|is_integrated_with_fitbit %}
+{% block content %}
+    <!-- from here we are in a Bulma <div class="container"> -->
 
-<p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
-<br />
-<br />
-<h2 class="subtitle is-3">Test d'écriture des données</h2>
-<p>
-  On peut tester la
-  <a
-    href="{% url 'fitbit-data' category='activities' resource='minutesSedentary' %}?base_date=2022-04-01&period=1d"
-    >récupération de données</a
-  >
-  !
-</p>
+    <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
+    <br />
 
-{% else %} Il faut commencer par
-<a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
-{%endif%}
-<br />
-<br />
-<div>
-  <a href="{% url 'logout' %}">Logout</a>
-</div>
+    {% if request.user|is_integrated_with_fitbit %}
+
+        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
+        <br />
+
+        <h2 class="subtitle is-3">Reading data test</h2>
+        Okay <b>{{ tsds.0.user }}</b>, here is your data for the
+        <b>{{ tsds.0.date }}</b>: <br />
+
+        {% for tsd in tsds %}<br />
+            {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
+        {% endfor %}
+
+        <br />
+    {% else %} Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+
+    {% endif %}
+    <br />
+    <br />
+    <div>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
 
 {% endblock %}

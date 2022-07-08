@@ -1,13 +1,30 @@
 version: 0.1
 cli:
-  version: 0.11.0-beta
+  version: 0.14.1-beta
 lint:
   enabled:
+    # GLOBAL
+    - gitleaks@8.3.0
+    - prettier@2.5.1
+
+    # PYTHON
     - black@22.3.0
     - flake8@4.0.1
-    - gitleaks@8.3.0
     - isort@5.9.3
+
+    # DOTENV
+    - dotenv-linter@v3.2.0
+
+    # MARKDOWN
     - markdownlint@0.31.1
-    - prettier@2.5.1
-    - taplo-fmt@release-cli-0.6.0
-    - taplo@release-cli-0.6.0
+
+    # TOML (libc6 2.27 too hold)
+    # - taplo@release-taplo-cli-0.6.8
+
+    # DOCKER
+    - hadolint@v2.10.0
+
+  ignore:
+    - linters: [ALL]
+      paths:
+        - "*.html"

@@ -1,5 +1,3 @@
-pyproject.toml
-static/
 
 ### VisualStudioCode ###
 .vscode/*
@@ -153,5 +151,9 @@ dmypy.json
 .pyre/
 
 # Miscellaneous
-db.json.bkp
-db.sqlite3.bkp
+.trunk/logs
+/staticfiles/
+pyproject.toml
+relax_messages.txt
+generate-sw.js
+manifest.json.BKP

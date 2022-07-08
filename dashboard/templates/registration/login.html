@@ -1,53 +1,53 @@
 <!-- registration/login.html -->
 
-{% extends "dashboard/base.html" %}
+{% extends "base.html" %}
 
 {% load widget_tweaks %}
 
 {% block title %}
-Login
+    Login
 {% endblock %}
 
 {% block content %}
-<!-- from here we are in a <div class="container"> -->
-    
+    <!-- from here we are in a <div class="container"> -->
+
     <h1 class="title">Please login first :)</h1>
-    
+
     {% if form.errors %}
-    <div class="content">
-        <p class="alert has-text-danger has-text-weight-medium">Le nom d'utilisateur ou le mot de passe est incorrect.</p>
-    </div>
+        <div class="content">
+            <p class="alert has-text-danger has-text-weight-medium">Le nom d'utilisateur ou le mot de passe est incorrect.</p>
+        </div>
     {% endif %}
-    
-    
+
+
     <form method="post" action="{% url 'login' %}" class="box">
         {% csrf_token %}
-        
+
         <div class="field">
             <label class="label">{{ form.username.label_tag }}</label>
             <div class="control">
                 {% render_field form.username class="input is-rounded is-primary" placeholder="Provided username" %}
             </div>
         </div>
-        
+
         <div class="field">
             <label class="label">{{ form.password.label_tag }}</label>
             <div class="control">
                 {% render_field form.password class="input is-rounded is-primary" placeholder="Provided password" %}
             </div>
         </div>
-        
+
         <br>
         <div class="level">
             <div class="control level-item">
-                
+
                 <button class="button is-rounded is-primary has-text-weight-bold">login</button>
-                
+
             </div>
         </div>
-        
-        
+
+
     </form>
-    
-    
+
+
 {% endblock %}

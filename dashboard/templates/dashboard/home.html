@@ -5,34 +5,32 @@
 {% block title %} Mon Tableau de Bord {% endblock %}
 
 {% block content %}
-<!-- from here we are in a Bulma <div class="container"> -->
+    <!-- from here we are in a Bulma <div class="container"> -->
 
-<p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
-<br />
+    <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
+    <br />
 
-{% if request.user|is_integrated_with_fitbit %}
+    {% if request.user|is_integrated_with_fitbit %}
 
-<p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
-<br />
+        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
+        <br />
 
-<h2 class="subtitle is-3">Reading data test</h2>
-Okay <b>{{ tsds.0.user }}</b>, here is your data for the
-<b>{{ tsds.0.date }}</b>: <br />
+        <h2 class="subtitle is-3">Reading data test</h2>
+        Okay <b>{{ tsds.0.user }}</b>, here is your data for the
+        <b>{{ tsds.0.date }}</b>: <br />
 
-{% for tsd in tsds %}<br />
-{{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
-{% endfor %}
+        {% for tsd in tsds %}<br />
+            {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
+        {% endfor %}
 
-<br />
-{% else %} Il faut commencer par
-<a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+        <br />
+    {% else %} Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
 
-{% endif %}
-
-<br />
-<br />
-<div>
-  <a href="{% url 'logout' %}">Logout</a>
-</div>
+    {% endif %}
+    <br />
+    <br />
+    <div>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
 
 {% endblock %}

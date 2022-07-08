@@ -22,5 +22,4 @@ urlpatterns = [
     path("", include("dashboard.urls")),
     path("", include("django.contrib.auth.urls")),
     path("silk/", include("silk.urls", namespace="silk")),
-    path("", include("pwa.urls")),
 ]

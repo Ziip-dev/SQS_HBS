@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     "django_simple_bulma",
     "widget_tweaks",
     "silk",
-    "pwa",
 ]
 
 MIDDLEWARE = [
@@ -191,55 +190,3 @@ CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["json", "pickle"]
 # CELERY_ALWAYS_EAGER = True
-
-
-# Django-PWA configuration
-# ========================
-PWA_APP_NAME = "Self-Quantification System for Health Behavior Support"
-PWA_APP_DESCRIPTION = "Prototype app for PhD experiment"
-PWA_APP_DISPLAY = "standalone"
-PWA_APP_ORIENTATION = "portrait-primary"
-PWA_APP_DIR = "ltr"
-PWA_APP_LANG = "fr"
-PWA_APP_START_URL = "/"
-PWA_APP_SCOPE = "/"
-# PWA_APP_THEME_COLOR = '#0A0302'
-PWA_APP_THEME_COLOR = "#ff0000"
-# PWA_APP_BACKGROUND_COLOR = '#ffffff'
-PWA_APP_BACKGROUND_COLOR = "#0000ff"
-PWA_APP_STATUS_BAR_COLOR = "default"
-PWA_APP_ICONS = [
-    {
-        "src": "static/icons/icon_panda-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-    },
-    {
-        "src": "static/icons/icon_panda-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    },
-    {
-        "src": "static/icons/maskable_icon_panda_x192.png",
-        "sizes": "192x192",
-        "type": "image/png",
-        "purpose": "maskable"
-    }
-]
-PWA_APP_ICONS_APPLE = [
-    {
-        "src": "static/icons/icon_panda-192x192.png",
-        "sizes": "192x192"}
-]
-PWA_APP_SPLASH_SCREEN = [
-    {
-        "src": "static/icons/icon_panda-512x512.png",
-        "media": "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
-    }
-]
-
-# DEBUG
-PWA_APP_DEBUG = True
-
-# Service worker
-# PWA_SERVICE_WORKER_PATH = Path(BASE_DIR, "SQS_HBS", "sw.js")

@@ -1,15 +1,51 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>SQS_HBS - offline</title>
-  </head>
-  <body>
-    <h1>Hors ligne</h1>
-    <p>
-      Aie... je n'arrive pas à établir de connexion avec mon serveur :/<br />
-      Tu peux me remettre en ligne s'il te plaît ? :)
-    </p>
-  </body>
+    <head>
+        <title>SQS_HBS - offline</title>
+    </head>
+    <body>
+        <h1>Hors ligne</h1>
+        <p>
+            Aie... je n'arrive pas à établir de connexion avec mon serveur :/
+        </p>
+        <br />
+        <p>
+            Je rechargerai la page automatiquement dès que la connexion sera réétablie,
+            mais je te laisse un bouton en dessous si tu veux quand même faire le boulot à ma place ;)
+        </p>
+        <br />
+        <button type="button">⤾ Reload</button>
+
+        <script>
+            document.querySelector('button').addEventListener('click', () => {
+                window.location.reload();
+            });
+
+            // Listen to changes in the network state, reload when online.
+            // This handles the case when the device is completely offline.
+            window.addEventListener('online', () => {
+                window.location.reload();
+            });
+
+            // Check if the server is responding & reload the page if it is.
+            // This handles the case when the device is online, but the server
+            // is offline or misbehaving.
+            async function checkNetworkAndReload() {
+                try {
+                    const response = await fetch('.');
+                    // Verify we get a valid response from the server
+                    if (response.status >= 200 && response.status < 500) {
+                        window.location.reload();
+                        return;
+                    }
+                } catch {
+                    // Unable to connect to the server, ignore.
+                }
+                window.setTimeout(checkNetworkAndReload, 2500);
+            }
+
+            checkNetworkAndReload();
+
+        </script>
+    </body>
 </html>

@@ -8,8 +8,8 @@
   "lang": "fr",
   "start_url": "/",
   "scope": "/",
-  "theme_color": "#ff0000",
-  "background_color": "#0000ff",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "icons/icon_panda-192x192.png",
@@ -22,7 +22,7 @@
       "type": "image/png"
     },
     {
-      "src": "icons/maskable_icon_panda_x192.png",
+      "src": "icons/icon_panda-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"

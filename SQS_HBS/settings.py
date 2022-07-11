@@ -177,7 +177,23 @@ LOGIN_REDIRECT_URL = "home"
 
 # Custom settings for django-simple-bulma
 # =======================================
-BULMA_SETTINGS = {}
+BULMA_SETTINGS = {
+    "custom_scss": [
+        "SQS_HBS/static/css/theme.scss",
+    ],
+    # "extensions": [
+    #     "bulma-pageloader",
+    # ],
+    # "variables": {
+    # "primary": "#000000",
+    # "size-1": "6rem",
+    # },
+    # "alt_variables": {
+    #     "primary": "#fff",
+    #     "scheme-main": "#000",
+    # },
+    "output_style": "compressed",
+}
 
 
 # Celery configuration - uppercase instead of lowercase, and start with CELERY_

@@ -195,9 +195,8 @@ BULMA_SETTINGS = {
         # $family-sans-serif: "Nunito", sans-serif;
         "primary": "$text-1",
         "grey-light": "$text-2",
-        # $link: $pink;
-        # $widescreen-enabled: false;
-        # $fullhd-enabled: false;
+        "widescreen-enabled": "false",
+        "fullhd-enabled": "false",
 
         # Update some of Bulma's component variables
         "body-background-color": "$background",

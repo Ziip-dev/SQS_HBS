@@ -119,14 +119,13 @@ ROADMAP
 
 - [ ] Intégrer la logique d'accompagnement en fonction de l'AP.
 
-- [ ] Transformer en PWA (tout est dans les ressources collectées + livre).
-
 - [ ] Test IRL sur téléphone.
-
 
 
 CHANGELOG
 =========
+
+- Transformer en PWA (tout est dans les ressources collectées + livre).
 
 - Intégrer Celery pour bénéficier des tasks asynchrones déjà écrites dans
   fitapp, changer le database backend pour gérer efficacement la concurrence

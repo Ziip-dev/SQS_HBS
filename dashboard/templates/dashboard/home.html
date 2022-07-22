@@ -6,38 +6,44 @@
 
 {% block content %}
 
-    <div class="content">
+    {% if request.user|is_integrated_with_fitbit %}
+        <section class="section">
+            <div class="container">
+                <div class="content">
+                    <h5 class="subtitle is-5 has-text-grey-light">Bonjour {{ user.username }} :)</h5>
+                    <div class="box">
+                        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Duis elementum aliquam mauris.
+                            Cras rutrum mauris non mi lacinia sollicitudin.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <h5 class="subtitle is-5 has-text-grey-light">Bonjour {{ user.username }} :)</h5>
-
-        <div class="box">
-
-            {% if request.user|is_integrated_with_fitbit %}
-                <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Duis elementum aliquam mauris.
-                    Cras rutrum mauris non mi lacinia sollicitudin.
-                </p>
+        <section class="section">
+            <div class="container has-content-centered">
+                <div class="content">
+                    <h2 class="subtitle is-3">Dataviz test</h2>
+                    <b>{{ tsds.0.user }}</b> data for the <b>{{ tsds.0.date }}</b>: <br />
+                    {% for tsd in tsds %}<br />
+                        {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
+                    {% endfor %}
                 </div>
 
-                </div>
+                <div id="chart-container" style="width: 100%; height: 600px;"></div>
 
-                <br />
-                <br />
-                <h2 class="subtitle is-3">Reading data test</h2>
-                Okay <b>{{ tsds.0.user }}</b>, here is your data for the
-                <b>{{ tsds.0.date }}</b>: <br />
+            </div>
+        </section>
 
-                {% for tsd in tsds %}<br />
-                    {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
-                {% endfor %}
-
-                <br />
-                <br />
+        <section class="section">
+            <div class="container">
                 <div class="content">
                     <div class="box">
                         <h5 class="subtitle is-5 has-text-grey-light">Titre article</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                             Quisque tincidunt lectus ut dolor malesuada laoreet.
                             Curabitur interdum quam arcu, molestie rutrum purus viverra eu.
                             Vestibulum mattis nibh nec sodales sagittis.
@@ -54,17 +60,82 @@
                             Vivamus aliquam eu ante non gravida.
                             Ut ullamcorper nisi nec interdum hendrerit.
                         </p>
+
                     </div>
                 </div>
+            </div>
+        </section>
 
-            {% else %} Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"
+            integrity="sha256-oZEaXgWqxLmr12VzCK9eGOuHIi3XPZ/KsJXXFjtyvZA="
+            crossorigin="anonymous">
+        </script>
 
-            {% endif %}
-            {% comment %} <br />
-            <div>
-                <a href="{% url 'logout' %}">Logout</a>
-            </div> {% endcomment %}
+        <script type="text/javascript">
+            var containerDom = document.getElementById("chart-container");
+            var chart = echarts.init(containerDom, null, {renderer: 'svg'});
+            var option;
 
-        </div>
+            let rawData = [
+                //  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 1, 1, 1, 1, 5, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 10],
+                [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 10],
+                [0, 6, 3, 15, 0, 16, 1, 0, 0, 1, 6, 0, 1, 6, 0, 2, 0, 2, 0, 0],
+                //  [0, 8, 13, 15, 0, 12, 23, 0, 0, 1, 0, 1, 0, 0, 6, 0, 0, 1, 0, 1],
+                //  [0, 9, 28, 0, 91, 6, 1, 0, 0, 0, 7, 18, 0, 9, 16, 0, 1, 0, 0, 0],
+                //  [0, 3, 42, 36, 21, 0, 1, 0, 0, 0, 0, 16, 30, 1, 4, 62, 55, 1, 0, 0],
+                //  [0, 7, 13, 12, 64, 5, 0, 0, 0, 8, 17, 3, 72, 1, 1, 53, 1, 0, 0, 0]
+            ];
+
+            let labels = [
+                'Lundi',
+                'Mardi',
+                'Mercredi',
+                'Jeudi',
+                'Vendredi',
+                'Samedi',
+                'Dimanche'
+            ];
+
+            let data = [];
+            for (let i = 0; i < rawData.length; i++) {
+                for (let j = 0; j < rawData[i].length; j++) {
+                    let label = labels[i];
+                    data.push([j, rawData[i][j], label]);
+                }
+            }
+
+            option = {
+                color: [
+                    '#9594b7',
+                    '#7fb1df',
+                    '#a6d1de',
+                ],
+
+                singleAxis: {
+                    max: 'dataMax'
+                },
+                series: [
+                    {
+                        type: 'themeRiver',
+                        data: data,
+                        label: {
+                            show: false
+                        }
+                    }
+                ]
+            };
+
+            option && chart.setOption(option);
+            window.addEventListner('resize', chart.resize);
+
+        </script>
+
+    {% else %} Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
+
+    {% endif %}
+
+
+    <div><a href="{% url 'logout' %}">Logout</a></div>
 
 {% endblock %}

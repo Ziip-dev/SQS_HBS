@@ -1,0 +1,59 @@
+<!-- registration/login.html -->
+
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+    <!-- Top banner section -->
+    <section class="section">
+        <div class="container has-text-centered">
+            <div class="content">
+                <h3 class="title is-3 has-text-primary">Bienvenue</h3>
+                <p class="is-size-5 has-text-primary">Vous êtes bien sur la page de l'expérience !</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form error message -->
+    {% if form.errors %}
+        <div class="content">
+            <p class="alert has-text-danger has-text-weight-medium">Le nom d'utilisateur ou le mot de passe est incorrect.</p>
+        </div>
+    {% endif %}
+
+    <!-- Form section -->
+    <div class="container">
+        <form method="post" action="{% url 'login' %}" class="box">
+            {% csrf_token %}
+
+            <div class="field">
+                <label class="label has-text-grey-light">{{ form.username.label_tag }}</label>
+                <div class="control">
+                    {% render_field form.username class="input is-rounded is-primary" placeholder="identifiant fourni" %}
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label has-text-grey-light">{{ form.password.label_tag }}</label>
+                <div class="control">
+                    {% render_field form.password class="input is-rounded is-primary" placeholder="Mot de passe fourni" %}
+                </div>
+            </div>
+
+            <br>
+            <div class="level">
+                <div class="control level-item">
+
+                    <button class="button is-rounded is-primary has-text-weight-bold">commencer</button>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}

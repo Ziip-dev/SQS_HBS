@@ -2,7 +2,7 @@
 
 {% extends 'base.html' %}
 
-{% block title %} Mon Tableau de Bord {% endblock %}
+{% block title %} Tableau de Bord {% endblock %}
 
 {% block content %}
 
@@ -27,11 +27,13 @@
                 <div class="content">
                     <h2 class="subtitle is-3">Dataviz test</h2>
                     <b>{{ tsds.0.user }}</b> data for the <b>{{ tsds.0.date }}</b>: <br />
+                    <b>{{ tsds.9.date }}</b><br />
                     {% for tsd in tsds %}<br />
                         {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
                     {% endfor %}
                 </div>
 
+                <p><b>{{ tsds.2.resource_type.resource }} = {{ tsds.2.value }}</b></p>
                 <div id="chart-container" style="width: 100%; height: 600px;"></div>
 
             </div>
@@ -77,24 +79,19 @@
             var option;
 
             let rawData = [
-                //  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 1, 1, 1, 1, 1, 1, 1, 5, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 10],
-                [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 10],
-                [0, 6, 3, 15, 0, 16, 1, 0, 0, 1, 6, 0, 1, 6, 0, 2, 0, 2, 0, 0],
-                //  [0, 8, 13, 15, 0, 12, 23, 0, 0, 1, 0, 1, 0, 0, 6, 0, 0, 1, 0, 1],
-                //  [0, 9, 28, 0, 91, 6, 1, 0, 0, 0, 7, 18, 0, 9, 16, 0, 1, 0, 0, 0],
-                //  [0, 3, 42, 36, 21, 0, 1, 0, 0, 0, 0, 16, 30, 1, 4, 62, 55, 1, 0, 0],
-                //  [0, 7, 13, 12, 64, 5, 0, 0, 0, 8, 17, 3, 72, 1, 1, 53, 1, 0, 0, 0]
+                // si tsds out of bound, pas d'erreur remontée mais soucis d'affichage
+                // pour une liste avec des éléments vides.
+                // --> il faut conditionner le dataset si les data n'existent pas encore
+                [0, {{ tsds.0.value }}, 5874, 1000, 6765, 0, 0, 0, 0],
+                [0, 2000, 2451, 4000, 3850, 4510, 1230, 750, 0],
+                //[5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000],
+                [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000],
             ];
 
             let labels = [
-                'Lundi',
-                'Mardi',
-                'Mercredi',
-                'Jeudi',
-                'Vendredi',
-                'Samedi',
-                'Dimanche'
+                'Semaine 1',
+                'Semaine 2',
+                ' ',
             ];
 
             let data = [];
@@ -106,11 +103,8 @@
             }
 
             option = {
-                color: [
-                    '#9594b7',
-                    '#7fb1df',
-                    '#a6d1de',
-                ],
+
+                color: ['#9594b7', '#7fb1df', '#f6faff'],
 
                 singleAxis: {
                     max: 'dataMax'

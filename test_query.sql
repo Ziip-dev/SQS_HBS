@@ -12,4 +12,5 @@ FROM fitapp_timeseriesdata
 JOIN auth_user ON fitapp_timeseriesdata.user_id=auth_user.id
 JOIN fitapp_timeseriesdatatype ON fitapp_timeseriesdata.resource_type_id=fitapp_timeseriesdatatype.id
 
-WHERE fitapp_timeseriesdata.date>='2022-07-15'
+WHERE fitapp_timeseriesdata.date>='2022-08-07'
+ORDER BY fitapp_timeseriesdata.date ASC

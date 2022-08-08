@@ -190,14 +190,12 @@ BULMA_SETTINGS = {
         "blue-alt-2": "#7fb1df",
         "blue-alt-3": "#a6d1de",
         "text-2": "$blue-alt-1",
-
         # // Update Bulma's global variables
         # $family-sans-serif: "Nunito", sans-serif;
         "primary": "$text-1",
         "grey-light": "$text-2",
         "widescreen-enabled": "false",
         "fullhd-enabled": "false",
-
         # Update some of Bulma's component variables
         "body-background-color": "$background",
         "box-background-color": "$box-background",

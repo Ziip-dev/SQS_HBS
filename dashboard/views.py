@@ -19,6 +19,14 @@ from .models import StartDate
 )
 @eye
 def home(request):
+    """
+    The home view renders the home page template.
+    It checks if the user is authenticated, stores the start date at the first login,
+    and retrieves the user's physical activity data.
+    It then parses the retrieved data and pass it to the home template.
+
+    :return: The home page template or the login template.
+    """
     if request.user.is_authenticated:
         #  If not already present, store the experiment start date after the first login
         if not StartDate.objects.filter(user=request.user).exists():
@@ -26,11 +34,7 @@ def home(request):
 
         # Retrieve and parse user data for the 2-week steam graph
         # start date as datetime object
-        from datetime import timedelta
-
-        start_date = StartDate.objects.get(user=request.user).start_date - timedelta(
-            days=13
-        )
+        start_date = StartDate.objects.get(user=request.user).start_date
 
         # retrieve necessary user's physical activity (PA) data from database
         wanted_resources = ["minutesFairlyActive", "minutesVeryActive"]
@@ -54,29 +58,24 @@ def home(request):
         ]
 
         # retrieve the first two weeks of the experiment
+        second_week_started = True if len(weekly_PA_data) > 1 else False
         week_1_PA_data = weekly_PA_data[0]
-        # TODO là va y avoir un soucis d'OOB pendant la première semaine d'XP...
-        week_2_PA_data = weekly_PA_data[1]
+        if second_week_started:
+            week_2_PA_data = weekly_PA_data[1]
 
         # isolate PA values as lists, and complete with 0 for the remaining days of the week
         week_1_PA_values = [d.get("minutesActive") for d in week_1_PA_data] + [0] * (
             7 - week_1_PA_data.count()
         )
-        week_2_PA_values = [d.get("minutesActive") for d in week_2_PA_data] + [0] * (
-            7 - week_2_PA_data.count()
-        )
-
-        print(
-            f"""
-              {week_1_PA_values}
-              {week_2_PA_values}
-              """
-        )
+        if second_week_started:
+            week_2_PA_values = [d.get("minutesActive") for d in week_2_PA_data] + [
+                0
+            ] * (7 - week_2_PA_data.count())
 
         # create context dictionary with one entry per week
         context = {
             "PA_1": week_1_PA_values,
-            "PA_2": week_2_PA_values,
+            "PA_2": week_2_PA_values if second_week_started else [0] * 7,
         }
 
         return render(request, "dashboard/home.html", context)

@@ -49,7 +49,7 @@ def home(request):
 
         # separate PA data into lists of 7 days
         weekly_PA_data = [
-            aggregated_PA_data[d: d + 7]
+            aggregated_PA_data[d : d + 7]
             for d in range(0, aggregated_PA_data.count(), 7)
         ]
 
@@ -87,6 +87,5 @@ def home(request):
 
 def service_worker(request):
     sw_path = Path(settings.STATIC_ROOT, "sw.js")
-    response = HttpResponse(open(sw_path).read(),
-                            content_type="application/javascript")
+    response = HttpResponse(open(sw_path).read(), content_type="application/javascript")
     return response

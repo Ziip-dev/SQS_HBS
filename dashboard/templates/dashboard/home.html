@@ -2,35 +2,124 @@
 
 {% extends 'base.html' %}
 
-{% block title %} Mon Tableau de Bord {% endblock %}
+{% block title %} Tableau de Bord {% endblock %}
 
 {% block content %}
-    <!-- from here we are in a Bulma <div class="container"> -->
-
-    <p>Bienvenue sur ton interface personnelle, {{ user.username }}!</p>
-    <br />
 
     {% if request.user|is_integrated_with_fitbit %}
+        <section class="section pb-0">
+            <div class="container">
+                <div class="content">
+                    <h5 class="subtitle is-5 has-text-grey-light">Bonjour {{ user.username }} :)</h5>
+                    <div class="box">
+                        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Duis elementum aliquam mauris.
+                            Cras rutrum mauris non mi lacinia sollicitudin.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <p>Tes tokens d'authentication Fitbit sont correctement enregistrés :)</p>
-        <br />
+        <section class="section py-0">
+            <div class="container" id="chart-container" style="width: 100%; height: 600px;"></div>
+        </section>
 
-        <h2 class="subtitle is-3">Reading data test</h2>
-        Okay <b>{{ tsds.0.user }}</b>, here is your data for the
-        <b>{{ tsds.0.date }}</b>: <br />
+        <section class="section pt-0">
+            <div class="container">
+                <div class="content">
+                    <div class="box">
+                        <h5 class="subtitle is-5 has-text-grey-light">Titre article</h5>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Quisque tincidunt lectus ut dolor malesuada laoreet.
+                            Curabitur interdum quam arcu, molestie rutrum purus viverra eu.
+                            Vestibulum mattis nibh nec sodales sagittis.
+                            Suspendisse interdum nulla ipsum, et facilisis sapien aliquet ac.
+                            Suspendisse potenti.
+                            Vestibulum interdum ex eget pharetra condimentum.
+                            Quisque non augue in velit placerat viverra accumsan vitae leo.
+                            Aenean ac gravida nisi, id aliquet mauris.
+                            Suspendisse venenatis nisl pulvinar elementum interdum.
+                            Vivamus et ligula urna.
+                            Aliquam erat volutpat.
+                            Aenean ligula eros, porttitor eu mollis id, faucibus eget massa.
+                            Nunc porttitor odio nunc, nec consectetur ipsum accumsan facilisis.
+                            Vivamus aliquam eu ante non gravida.
+                            Ut ullamcorper nisi nec interdum hendrerit.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        {% for tsd in tsds %}<br />
-            {{ tsd.resource_type.resource }} = {{ tsd.value}}<br />
-        {% endfor %}
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"
+            integrity="sha256-oZEaXgWqxLmr12VzCK9eGOuHIi3XPZ/KsJXXFjtyvZA="
+            crossorigin="anonymous">
+        </script>
 
-        <br />
+        <script type="text/javascript">
+            var containerDom = document.getElementById("chart-container");
+            var chart = echarts.init(containerDom, null, {renderer: 'svg'});
+            var option;
+
+            let rawData = [
+                [0].concat({{ PA_1 }}),
+                [0].concat({{ PA_2 }}),
+                [60, 60, 60, 60, 60, 60, 60, 60, 60],
+            ];
+
+            let labels = [
+                'semaine 1',
+                'semaine 2',
+                ' ',
+            ];
+
+            let data = [];
+            for (let i = 0; i < rawData.length; i++) {
+                for (let j = 0; j < rawData[i].length; j++) {
+                    let label = labels[i];
+                    data.push([j, rawData[i][j], label]);
+                }
+            }
+
+            option = {
+
+                color: ['#9594b7', '#7fb1df', '#f6faff'],
+
+                singleAxis: {
+                    max: 'dataMax',
+                    axisLine: { show: false },
+                    axisLabel: { show: false },
+                    axisTick: { show: false },
+                    left: 0,
+                    top: 0,
+                    right: 0,
+                    bottom: 0
+                },
+
+                series: [
+                    {
+                        type: 'themeRiver',
+                        data: data,
+                        label: {
+                            show: false
+                        }
+                    }
+                ]
+            };
+
+            option && chart.setOption(option);
+            window.addEventListener('resize', chart.resize);
+
+        </script>
+
     {% else %} Il faut commencer par <a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a>.
 
     {% endif %}
-    <br />
-    <br />
-    <div>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+
+
+    <div><a href="{% url 'logout' %}">Logout</a></div>
 
 {% endblock %}

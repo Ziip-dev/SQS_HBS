@@ -113,20 +113,19 @@ ROADMAP
 - [ ] Check X-Fitbit-Signature --> peut-être déjà intégré dans fitapp
     https://dev.fitbit.com/build/reference/web-api/developer-guide/best-practices/#Subscriber-Security
 
-- [ ] Mettre en place le dashboard utilisateur (check templates).
-
 - [ ] Intégrer l'analyse des données d'activité physique de l'utilisateur.
 
 - [ ] Intégrer la logique d'accompagnement en fonction de l'AP.
 
-- [ ] Transformer en PWA (tout est dans les ressources collectées + livre).
-
 - [ ] Test IRL sur téléphone.
-
 
 
 CHANGELOG
 =========
+
+- Mettre en place le dashboard utilisateur.
+
+- Transformer en PWA (tout est dans les ressources collectées + livre).
 
 - Intégrer Celery pour bénéficier des tasks asynchrones déjà écrites dans
   fitapp, changer le database backend pour gérer efficacement la concurrence

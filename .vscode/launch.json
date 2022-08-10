@@ -5,11 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Django",
+      "name": "Django: SQS-HBS",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/manage.py",
-      "args": ["livereload", "7000"],
+      "args": ["runserver", "7001"],
       "django": true,
       "justMyCode": true
     }

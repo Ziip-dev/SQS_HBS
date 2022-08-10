@@ -2,7 +2,6 @@
 
 from pathlib import Path
 
-from birdseye import eye
 from django.conf import settings
 from django.db.models import IntegerField, Sum
 from django.db.models.functions import Cast
@@ -17,7 +16,6 @@ from .models import StartDate
 @fitbit_integration_warning(
     msg="Connectez-vous à Fitbit à l'aide des identifiants fournis"
 )
-@eye
 def home(request):
     """
     The home view renders the home page template.

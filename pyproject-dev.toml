@@ -28,7 +28,6 @@ django-fitbit = {path = "../django-fitbit", develop = true}
 django-silk = "^4.3.0"
 flower = "^1.0.0"
 djhtml = "^1.5.1"
-birdseye = "^0.9.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -60,7 +60,6 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 WORKDIR $PYSETUP_PATH
 
 # Copy project requirement files here to ensure they will be cached.
-# COPY pyproject.toml poetry.lock ./
 COPY pyproject.toml ./
 
 # Install runtime deps (uses $POETRY_VIRTUALENVS_IN_PROJECT internally)
@@ -79,8 +78,8 @@ COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 WORKDIR $APP_DIR
 COPY ./SQS_HBS ./SQS_HBS
 COPY ./dashboard ./dashboard
-COPY ./static ./static
-COPY manage.py db.sqlite3 docker-entrypoint.sh .env ./
+COPY ./staticfiles ./staticfiles
+COPY manage.py docker-entrypoint.sh ./
 
 # Set execution permission and proper ownership
 RUN chmod a+x docker-entrypoint.sh
@@ -94,7 +93,4 @@ USER ${user}
 
 # Server
 EXPOSE 7000
-# ENTRYPOINT ["python", "manage.py"]
-# CMD [ "runserver", "0.0.0.0:7000" ]
 ENTRYPOINT ["./docker-entrypoint.sh"]
-

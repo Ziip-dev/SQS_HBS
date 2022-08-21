@@ -5,12 +5,14 @@ set -eu
 # Activate virtual environment
 source /home/ziip/pysetup/.venv/bin/activate
 
-# Setup server
-# migrations if needed
+# Update webserver - migrations and staticfiles
 python manage.py collectstatic --noinput
+python manage.py migrate
 
-# Evaluating passed command:
-# gunicorn -b :5001 wsgi --max-requests 10000 --timeout 5 --keep-alive 5 --log-level info
-python manage.py runserver 0.0.0.0:7000
+# EITHER run webserver
+gunicorn SQS_HBS.wsgi --bind=0.0.0.0:7000
+
+# OR celery worker
+# celery --app=SQS_HBS worker --loglevel=INFO --pool=eventlet --concurrency=100
 
 exec "$@"

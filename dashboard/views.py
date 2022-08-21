@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from fitapp.decorators import fitbit_integration_warning
 from fitapp.models import TimeSeriesData
+from fitapp.utils import is_integrated
 
 from .models import StartDate
 
@@ -25,12 +26,12 @@ def home(request):
 
     :return: The home page template or the login template.
     """
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and is_integrated(request.user):
         #  If not already present, store the experiment start date after the first login
         if not StartDate.objects.filter(user=request.user).exists():
             StartDate(user=request.user).save()
 
-        # Retrieve and parse user data for the 2-week steam graph
+        # Retrieve and parse user PA data per week (for the 2-week steam graph)
         # start date as datetime object
         start_date = StartDate.objects.get(user=request.user).start_date
 
@@ -56,15 +57,20 @@ def home(request):
         ]
 
         # retrieve the first two weeks of the experiment
-        second_week_started = True if len(weekly_PA_data) > 1 else False
-        week_1_PA_data = weekly_PA_data[0]
+        first_week_started = True if len(weekly_PA_data) >= 1 else False
+        second_week_started = True if len(weekly_PA_data) >= 2 else False
+
+        if first_week_started:
+            week_1_PA_data = weekly_PA_data[0]
+
         if second_week_started:
             week_2_PA_data = weekly_PA_data[1]
 
         # isolate PA values as lists, and complete with 0 for the remaining days of the week
-        week_1_PA_values = [d.get("minutesActive") for d in week_1_PA_data] + [0] * (
-            7 - week_1_PA_data.count()
-        )
+        if first_week_started:
+            week_1_PA_values = [d.get("minutesActive") for d in week_1_PA_data] + [
+                0
+            ] * (7 - week_1_PA_data.count())
         if second_week_started:
             week_2_PA_values = [d.get("minutesActive") for d in week_2_PA_data] + [
                 0
@@ -72,11 +78,14 @@ def home(request):
 
         # create context dictionary with one entry per week
         context = {
-            "PA_1": week_1_PA_values,
+            "PA_1": week_1_PA_values if first_week_started else [0] * 7,
             "PA_2": week_2_PA_values if second_week_started else [0] * 7,
         }
 
         return render(request, "dashboard/home.html", context)
+
+    elif request.user.is_authenticated and not is_integrated(request.user):
+        return render(request, "dashboard/integration.html")
 
     else:
         return redirect("login")

@@ -1,0 +1,24 @@
+<!-- dashboard/integration.html -->
+
+{% extends 'base.html' %}
+
+{% block title %} Tableau de Bord {% endblock %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+            <div class="content">
+                <h5 class="subtitle is-5 has-text-grey-light">Bonjour {{ user.username }} !</h5>
+                <div class="box">
+                    <p>
+                        Tu es prêt.e à débuter l'expérience :)<br />
+                        Il faut juste <u><a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a></u>
+                        avec les identifiants fournis.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -153,7 +153,4 @@ dmypy.json
 # Miscellaneous
 .trunk/logs
 /staticfiles/
-pyproject.toml
 relax_messages.txt
-generate-sw.js
-manifest.json.BKP

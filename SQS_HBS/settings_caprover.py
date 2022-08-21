@@ -23,13 +23,12 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_PRELOAD = True
 
 # Allowed hosts get parsed from a comma-separated list
-# hosts = env("CR_HOSTS") or ImproperlyConfigured("CR_HOSTS not set")
-ALLOWED_HOSTS = env("CR_HOSTS") or ImproperlyConfigured("CR_HOSTS not set")
-# try:
-#     ALLOWED_HOSTS = hosts.split(",")
-# # trunk-ignore(flake8/E722)
-# except:
-#     raise ImproperlyConfigured("CR_HOSTS could not be parsed")
+hosts = env("CR_HOSTS") or ImproperlyConfigured("CR_HOSTS not set")
+try:
+    ALLOWED_HOSTS = hosts.split(",")
+# trunk-ignore(flake8/E722)
+except:
+    raise ImproperlyConfigured("CR_HOSTS could not be parsed")
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

@@ -78,7 +78,6 @@ COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 WORKDIR $APP_DIR
 COPY ./SQS_HBS ./SQS_HBS
 COPY ./dashboard ./dashboard
-COPY ./staticfiles ./staticfiles
 COPY manage.py docker-entrypoint.sh ./
 
 # Set execution permission and proper ownership

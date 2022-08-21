@@ -92,4 +92,4 @@ USER ${user}
 
 # Server
 EXPOSE 7000
-ENTRYPOINT ["./run-webserver.sh"]
+ENTRYPOINT ["./run-celery.sh"]

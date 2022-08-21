@@ -78,10 +78,10 @@ COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 WORKDIR $APP_DIR
 COPY ./SQS_HBS ./SQS_HBS
 COPY ./dashboard ./dashboard
-COPY manage.py docker-entrypoint.sh ./
+COPY manage.py run-celery.sh ./
 
 # Set execution permission and proper ownership
-RUN chmod a+x docker-entrypoint.sh
+RUN chmod a+x run-celery.sh
 
 # Create and switch to non-root user
 ARG user=ziip

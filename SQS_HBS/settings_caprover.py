@@ -12,7 +12,7 @@ SECRET_KEY = env("CR_SECRET_KEY") or ImproperlyConfigured("CR_SECRET_KEY not set
 
 # HTTP Strict Transport Security
 # https://docs.djangoproject.com/en/4.0/ref/middleware/#http-strict-transport-security
-SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_SECONDS = 30
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # SSL/HTTPS configuration

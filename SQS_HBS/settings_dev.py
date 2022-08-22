@@ -2,11 +2,15 @@
 Local development server settings for SQS_HBS project.
 """
 
+from .settings import env
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "thisisadevelopmentlocalkey,getabetterlookingoneforproduction"
+SECRET_KEY = env(
+    "SECRET_KEY", default="thisisadevelopmentlocalkey,getabetterlookingoneforproduction"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

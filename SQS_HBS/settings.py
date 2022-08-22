@@ -135,8 +135,6 @@ LOGIN_REDIRECT_URL = "home"
 # Enable SILK authentication
 SILKY_AUTHENTICATION = True
 SILKY_AUTHORISATION = True
-# trunk-ignore(flake8/E731)
-SILKY_PERMISSIONS = lambda user: user.is_superuser
 SILKY_META = True
 
 

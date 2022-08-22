@@ -20,8 +20,17 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # Let the proxy manage SSL redirections so to avoid ERR_TOO_MANY_REDIRECTS
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 SECURE_HSTS_PRELOAD = True
+
+# CSRF settings
+# https://docs.djangoproject.com/en/4.0/ref/csrf/#how-csrf-works
+CSRF_COOKIE_SECURE = True
+trusted_origins = env("CR_TRUSTED_ORIGINS")
+try:
+    CSRF_TRUSTED_ORIGINS = trusted_origins.split(",")
+# trunk-ignore(flake8/E722)
+except:
+    raise ImproperlyConfigured("CR_TRUSTED_ORIGINS could not be parsed")
 
 # Allowed hosts get parsed from a comma-separated list
 hosts = env("CR_HOSTS") or ImproperlyConfigured("CR_HOSTS not set")

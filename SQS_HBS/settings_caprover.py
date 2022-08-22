@@ -17,7 +17,8 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # SSL/HTTPS configuration
 # https://docs.djangoproject.com/en/4.0/topics/security/#ssl-https
-SECURE_SSL_REDIRECT = True
+# Let the proxy manage SSL redirections so to avoid ERR_TOO_MANY_REDIRECTS
+SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_PRELOAD = True

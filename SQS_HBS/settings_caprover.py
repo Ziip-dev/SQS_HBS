@@ -2,13 +2,12 @@
 Caprover specific settings for deployment.
 """
 
-from django.core.exceptions import ImproperlyConfigured
-
 from .settings import env
 
 # Django environment configuration
-DEBUG = env("CR_DEBUG") or ImproperlyConfigured("CR_DEBUG not set")
-SECRET_KEY = env("CR_SECRET_KEY") or ImproperlyConfigured("CR_SECRET_KEY not set")
+DEBUG = env("CR_DEBUG")
+SECRET_KEY = env("CR_SECRET_KEY")
+ALLOWED_HOSTS = env.list("CR_HOSTS")
 
 # HTTP Strict Transport Security
 # https://docs.djangoproject.com/en/4.0/ref/middleware/#http-strict-transport-security
@@ -25,28 +24,15 @@ SECURE_HSTS_PRELOAD = True
 # CSRF settings
 # https://docs.djangoproject.com/en/4.0/ref/csrf/#how-csrf-works
 CSRF_COOKIE_SECURE = True
-trusted_origins = env("CR_TRUSTED_ORIGINS")
-try:
-    CSRF_TRUSTED_ORIGINS = trusted_origins.split(",")
-# trunk-ignore(flake8/E722)
-except:
-    raise ImproperlyConfigured("CR_TRUSTED_ORIGINS could not be parsed")
-
-# Allowed hosts get parsed from a comma-separated list
-hosts = env("CR_HOSTS") or ImproperlyConfigured("CR_HOSTS not set")
-try:
-    ALLOWED_HOSTS = hosts.split(",")
-# trunk-ignore(flake8/E722)
-except:
-    raise ImproperlyConfigured("CR_HOSTS could not be parsed")
+CSRF_TRUSTED_ORIGINS = env.list("CR_TRUSTED_ORIGINS")
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-host = env("CR_DB_HOST") or ImproperlyConfigured("CR_DB_HOST not set")
-port = env("CR_DB_PORT") or ImproperlyConfigured("CR_DB_PORT not set")
-name = env("CR_DB_NAME") or ImproperlyConfigured("CR_DB_NAME not set")
-user = env("CR_DB_USER") or ImproperlyConfigured("CR_DB_USER not set")
-password = env("CR_DB_PASSWORD") or ImproperlyConfigured("CR_DB_PASSWORD not set")
+host = env("CR_DB_HOST")
+port = env("CR_DB_PORT")
+name = env("CR_DB_NAME")
+user = env("CR_DB_USER")
+password = env("CR_DB_PASSWORD")
 
 
 DATABASES = {
@@ -63,12 +49,10 @@ DATABASES = {
 
 # Celery configuration - uppercase instead of lowercase, and start with CELERY_
 # =============================================================================
-broker_host = env("CR_BROKER_HOST") or ImproperlyConfigured("CR_BROKER_HOST not set")
-broker_port = env("CR_BROKER_PORT") or ImproperlyConfigured("CR_BROKER_PORT not set")
-broker_user = env("CR_BROKER_USER") or ImproperlyConfigured("CR_BROKER_USER not set")
-broker_password = env("CR_BROKER_PASSWORD") or ImproperlyConfigured(
-    "CR_BROKER_PASSWORD not set"
-)
+broker_host = env("CR_BROKER_HOST")
+broker_port = env("CR_BROKER_PORT")
+broker_user = env("CR_BROKER_USER")
+broker_password = env("CR_BROKER_PASSWORD")
 
 CELERY_BROKER_URL = (
     f"amqp://{broker_user}:{broker_password}@{broker_host}:{broker_port}"

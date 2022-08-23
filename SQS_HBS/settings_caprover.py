@@ -5,8 +5,8 @@ Caprover specific settings for deployment.
 from .settings import env
 
 # Django environment configuration
-DEBUG = env("CR_DEBUG")
-SECRET_KEY = env("CR_SECRET_KEY")
+DEBUG = env.bool("CR_DEBUG")
+SECRET_KEY = env.str("CR_SECRET_KEY")
 ALLOWED_HOSTS = env.list("CR_HOSTS")
 
 # HTTP Strict Transport Security

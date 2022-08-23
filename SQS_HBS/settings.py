@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Initialise environment variables - use .env file if we are not on Caprover
 env = environ.Env()
 
-if not env.__contains__("CAPROVER") or env.bool("CAPROVER") is False:
+if not env.__contains__("CAPROVER"):
     env.read_env(Path(BASE_DIR, ".env"))
 
 
@@ -180,7 +180,7 @@ FITAPP_CONSUMER_SECRET = env("FITAPP_CONSUMER_SECRET")
 # ENVIRONMENT RELATED SETTINGS
 # ============================
 
-if env.__contains__("CAPROVER") and env.bool("CAPROVER") is True:
+if env.__contains__("CAPROVER"):
     # trunk-ignore(flake8/F401)
     # trunk-ignore(flake8/F403)
     from .settings_caprover import *

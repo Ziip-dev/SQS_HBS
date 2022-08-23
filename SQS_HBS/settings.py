@@ -11,9 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Initialise environment variables - use .env file if we are not on Caprover
-env = environ.Env(CAPROVER=(bool, False))
+env = environ.Env()
 
-if env("CAPROVER") is False:
+if not env.__contains__("CAPROVER") or env.bool("CAPROVER") is False:
     env.read_env(Path(BASE_DIR, ".env"))
 
 
@@ -180,15 +180,16 @@ FITAPP_CONSUMER_SECRET = env("FITAPP_CONSUMER_SECRET")
 # ENVIRONMENT RELATED SETTINGS
 # ============================
 
-if env("CAPROVER") is False:
-    # trunk-ignore(flake8/F401)
-    # trunk-ignore(flake8/F403)
-    from .settings_dev import *
-
-    # from .settings_dev import (SECRET_KEY, DEBUG, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, DATABASES, CELERY_TIMEZONE, CELERY_BROKER_URL, CELERY_TASK_SERIALIZER, CELERY_ACCEPT_CONTENT)
-else:
+if env.__contains__("CAPROVER") and env.bool("CAPROVER") is True:
     # trunk-ignore(flake8/F401)
     # trunk-ignore(flake8/F403)
     from .settings_caprover import *
 
     # from .settings_caprover import (DEBUG, SECRET_KEY, SECURE_HSTS_SECONDS, SECURE_HSTS_INCLUDE_SUBDOMAINS, SECURE_SSL_REDIRECT, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE, SECURE_HSTS_PRELOAD, ALLOWED_HOSTS, DATABASES, CELERY_BROKER_URL, CELERY_TASK_SERIALIZER, CELERY_ACCEPT_CONTENT, CELERY_TIMEZONE)
+
+else:
+    # trunk-ignore(flake8/F401)
+    # trunk-ignore(flake8/F403)
+    from .settings_dev import *
+
+    # from .settings_dev import (SECRET_KEY, DEBUG, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, DATABASES, CELERY_TIMEZONE, CELERY_BROKER_URL, CELERY_TASK_SERIALIZER, CELERY_ACCEPT_CONTENT)

@@ -7,7 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 from .settings import env
 
 # Django environment configuration
-DEBUG = env("CR_DEBUG") or ImproperlyConfigured("CR_DEBUG not set")
+DEBUG = env.bool("CR_DEBUG") or ImproperlyConfigured("CR_DEBUG not set")
 SECRET_KEY = env("CR_SECRET_KEY") or ImproperlyConfigured("CR_SECRET_KEY not set")
 
 # HTTP Strict Transport Security

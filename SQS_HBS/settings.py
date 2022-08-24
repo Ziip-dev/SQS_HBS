@@ -213,13 +213,14 @@ if env.__contains__("CAPROVER"):
         SECURE_HSTS_INCLUDE_SUBDOMAINS,
         SECURE_HSTS_PRELOAD,
         SECURE_HSTS_SECONDS,
+        SECURE_PROXY_SSL_HEADER,
         SECURE_SSL_REDIRECT,
         SESSION_COOKIE_SECURE,
     )
 
 else:
     # trunk-ignore(flake8/F401)
-    from .settings_dev import (
+    from .settings_dev import (  # SECURE_PROXY_SSL_HEADER,
         ALLOWED_HOSTS,
         CELERY_ACCEPT_CONTENT,
         CELERY_BROKER_URL,

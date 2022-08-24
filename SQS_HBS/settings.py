@@ -205,6 +205,7 @@ if env.__contains__("CAPROVER"):
         CELERY_TASK_SERIALIZER,
         CELERY_TIMEZONE,
         CSRF_COOKIE_SECURE,
+        CSRF_TRUSTED_ORIGINS,
         DATABASES,
         DEBUG,
         FITAPP_SUBSCRIBER_ID,

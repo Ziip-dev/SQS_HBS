@@ -9,6 +9,10 @@ DEBUG = env.bool("CR_DEBUG")
 SECRET_KEY = env.str("CR_SECRET_KEY")
 ALLOWED_HOSTS = env.list("CR_HOSTS")
 
+# Fitapp subscription settings
+FITAPP_SUBSCRIBER_ID = env.str("FITAPP_SUBSCRIBER_ID")
+FITAPP_VERIFICATION_CODE = env.str("FITAPP_VERIFICATION_CODE")
+
 # HTTP Strict Transport Security
 # https://docs.djangoproject.com/en/4.0/ref/middleware/#http-strict-transport-security
 SECURE_HSTS_SECONDS = 30

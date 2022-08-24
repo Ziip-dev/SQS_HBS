@@ -21,6 +21,11 @@ ALLOWED_HOSTS = ["*"]
 # SECURITY WARNING: this is only for test purposes with localtunnel
 CSRF_TRUSTED_ORIGINS = ["https://sqshbs-subscription.loca.lt"]
 
+# Fitbit subscription
+FITAPP_SUBSCRIBER_ID = "PHDXP_DEV"
+FITAPP_VERIFICATION_CODE = (
+    "41a7bc2eca95ae5570ae11c5f8300bccc991c2b2e42c312c42bac37b6af48b1e"
+)
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

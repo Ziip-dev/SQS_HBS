@@ -2,6 +2,7 @@
 Environment agnostic Django settings for SQS_HBS project.
 """
 
+from collections import OrderedDict
 from pathlib import Path
 
 import environ
@@ -175,6 +176,21 @@ BULMA_SETTINGS = {
 # ================================
 FITAPP_CONSUMER_KEY = env("FITAPP_CONSUMER_KEY")
 FITAPP_CONSUMER_SECRET = env("FITAPP_CONSUMER_SECRET")
+FITAPP_SUBSCRIBE = True
+FITAPP_SUBSCRIPTIONS = OrderedDict(
+    [
+        (
+            "activities",
+            [
+                "steps",
+                "minutesSedentary",
+                "minutesLightlyActive",
+                "minutesFairlyActive",
+                "minutesVeryActive",
+            ],
+        ),
+    ]
+)
 
 
 # ENVIRONMENT RELATED SETTINGS
@@ -182,14 +198,37 @@ FITAPP_CONSUMER_SECRET = env("FITAPP_CONSUMER_SECRET")
 
 if env.__contains__("CAPROVER"):
     # trunk-ignore(flake8/F401)
-    # trunk-ignore(flake8/F403)
-    from .settings_caprover import *
-
-    # from .settings_caprover import (DEBUG, SECRET_KEY, SECURE_HSTS_SECONDS, SECURE_HSTS_INCLUDE_SUBDOMAINS, SECURE_SSL_REDIRECT, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE, SECURE_HSTS_PRELOAD, ALLOWED_HOSTS, DATABASES, CELERY_BROKER_URL, CELERY_TASK_SERIALIZER, CELERY_ACCEPT_CONTENT, CELERY_TIMEZONE)
+    from .settings_caprover import (
+        ALLOWED_HOSTS,
+        CELERY_ACCEPT_CONTENT,
+        CELERY_BROKER_URL,
+        CELERY_TASK_SERIALIZER,
+        CELERY_TIMEZONE,
+        CSRF_COOKIE_SECURE,
+        DATABASES,
+        DEBUG,
+        FITAPP_SUBSCRIBER_ID,
+        FITAPP_VERIFICATION_CODE,
+        SECRET_KEY,
+        SECURE_HSTS_INCLUDE_SUBDOMAINS,
+        SECURE_HSTS_PRELOAD,
+        SECURE_HSTS_SECONDS,
+        SECURE_SSL_REDIRECT,
+        SESSION_COOKIE_SECURE,
+    )
 
 else:
     # trunk-ignore(flake8/F401)
-    # trunk-ignore(flake8/F403)
-    from .settings_dev import *
-
-    # from .settings_dev import (SECRET_KEY, DEBUG, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, DATABASES, CELERY_TIMEZONE, CELERY_BROKER_URL, CELERY_TASK_SERIALIZER, CELERY_ACCEPT_CONTENT)
+    from .settings_dev import (
+        ALLOWED_HOSTS,
+        CELERY_ACCEPT_CONTENT,
+        CELERY_BROKER_URL,
+        CELERY_TASK_SERIALIZER,
+        CELERY_TIMEZONE,
+        CSRF_TRUSTED_ORIGINS,
+        DATABASES,
+        DEBUG,
+        FITAPP_SUBSCRIBER_ID,
+        FITAPP_VERIFICATION_CODE,
+        SECRET_KEY,
+    )

@@ -21,6 +21,9 @@ ALLOWED_HOSTS = ["*"]
 # SECURITY WARNING: this is only for test purposes with localtunnel
 CSRF_TRUSTED_ORIGINS = ["https://sqshbs-subscription.loca.lt"]
 
+# Read X-Forwarded-For header
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Fitbit subscription
 FITAPP_SUBSCRIBER_ID = "PHDXP_DEV"
 FITAPP_VERIFICATION_CODE = (

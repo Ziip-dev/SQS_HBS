@@ -15,6 +15,7 @@ FITAPP_VERIFICATION_CODE = env.str("FITAPP_VERIFICATION_CODE")
 
 # HTTP Strict Transport Security
 # https://docs.djangoproject.com/en/4.0/ref/middleware/#http-strict-transport-security
+# SECURE_HSTS_SECONDS = 2_592_000
 SECURE_HSTS_SECONDS = 30
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
@@ -24,6 +25,8 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_PRELOAD = True
+# Read X-Forwarded-For header
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # CSRF settings
 # https://docs.djangoproject.com/en/4.0/ref/csrf/#how-csrf-works

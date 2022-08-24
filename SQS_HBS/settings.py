@@ -195,7 +195,6 @@ FITAPP_SUBSCRIPTIONS = OrderedDict(
 
 # ENVIRONMENT RELATED SETTINGS
 # ============================
-
 if env.__contains__("CAPROVER"):
     # trunk-ignore(flake8/F401)
     from .settings_caprover import (

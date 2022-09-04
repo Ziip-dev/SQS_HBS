@@ -1,5 +1,6 @@
 # dashboard/views.py
 
+import random
 from pathlib import Path
 
 from django.conf import settings
@@ -76,10 +77,16 @@ def home(request):
                 0
             ] * (7 - week_2_PA_data.count())
 
-        # create context dictionary with one entry per week
+        # Pick randomly an informative message about PA
+        messages_path = Path(settings.STATIC_ROOT, "dashboard", "PA_messages.txt")
+        lines = open(messages_path).read().splitlines()
+        message_PA = random.choice(lines)
+
+        # Create the context dictionary with the data to be sent to the template
         context = {
             "PA_1": week_1_PA_values if first_week_started else [0] * 7,
             "PA_2": week_2_PA_values if second_week_started else [0] * 7,
+            "PA_message": message_PA,
         }
 
         return render(request, "dashboard/home.html", context)

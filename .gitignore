@@ -153,4 +153,3 @@ dmypy.json
 # Miscellaneous
 .trunk/logs
 /staticfiles/
-relax_messages.txt

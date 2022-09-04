@@ -29,12 +29,6 @@ Clone the project repository::
 
     git clone https://github.com/Ziip-dev/SQS_HBS.git
 
-Create a soft link from the prod dependencies file ``pyproject-prod.toml`` to
-the required poetry dependencies file ``pyproject.toml`` ::
-
-    cd SQS_HBS/
-    ln -s pyproject-prod.toml pyproject.toml
-
 Create a python virtual environment ::
 
     poetry env use /path/to/python3.10
@@ -51,12 +45,6 @@ Clone both project repositories::
 
     git clone https://github.com/Ziip-dev/SQS_HBS.git
     git clone https://github.com/Ziip-dev/django-fitbit.git
-
-Create a soft link from the dev dependencies file ``pyproject-dev.toml`` to
-the required poetry dependencies file ``pyproject.toml``::
-
-    cd SQS_HBS/
-    ln -s pyproject-dev.toml pyproject.toml
 
 Create a python virtual environment::
 
@@ -97,31 +85,16 @@ detailed description.
 .. _file an issue: https://github.com/Ziip-dev/SQS_HBS/issues
 
 
-REMINDER
-========
-
-The current ``poetry.lock`` file corresponds to the ``pyproject-dev.toml``
-file.
-
-For deployment in production, remember to delete the lock file in order to
-switch to the ``pyproject-prod.toml`` dependencies.
-
-
 ROADMAP
 =======
-
-- [ ] Check X-Fitbit-Signature --> peut-être déjà intégré dans fitapp
-    https://dev.fitbit.com/build/reference/web-api/developer-guide/best-practices/#Subscriber-Security
-
-- [ ] Intégrer l'analyse des données d'activité physique de l'utilisateur.
-
-- [ ] Intégrer la logique d'accompagnement en fonction de l'AP.
-
-- [ ] Test IRL sur téléphone.
 
 
 CHANGELOG
 =========
+
+- Intégrer les messages d'information sur les conséquences émotionnelles de l'AP.
+
+- Test IRL sur téléphone.
 
 - Mettre en place le dashboard utilisateur.
 

@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "fitapp",
     "django_simple_bulma",
     "widget_tweaks",
-    "silk",
+    # "silk",
 ]
 
 MIDDLEWARE = [
@@ -44,7 +44,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "silk.middleware.SilkyMiddleware",
+    # "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = "SQS_HBS.urls"
@@ -133,9 +133,9 @@ LOGIN_REDIRECT_URL = "home"
 
 
 # Enable SILK authentication
-SILKY_AUTHENTICATION = True
-SILKY_AUTHORISATION = True
-SILKY_META = True
+# SILKY_AUTHENTICATION = True
+# SILKY_AUTHORISATION = True
+# SILKY_META = True
 
 
 # Custom settings for django-simple-bulma

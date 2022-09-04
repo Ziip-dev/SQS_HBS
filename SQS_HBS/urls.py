@@ -21,5 +21,5 @@ urlpatterns = [
     path("fitbit/", include("fitapp.urls")),
     path("", include("dashboard.urls")),
     path("", include("django.contrib.auth.urls")),
-    path("silk/", include("silk.urls", namespace="silk")),
+    # path("silk/", include("silk.urls", namespace="silk")),
 ]

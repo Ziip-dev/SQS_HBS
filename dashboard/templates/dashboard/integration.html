@@ -10,10 +10,17 @@
         <div class="container">
             <div class="content">
                 <h5 class="subtitle is-5 has-text-grey-light">Bonjour {{ user.username }} !</h5>
+                <b class="has-text-grey-light">Petite info à garder en tête pour la suite</b><br />
+                <br />
+                <blockquote>
+                    "<i>activité physique</i>" désigne toute activité qui te met en mouvement physiquement :
+                    marcher, courir, faire du vélo, faire le ménage, ranger, monter des escaliers, danser, etc...
+                </blockquote>
+                <br />
                 <div class="box">
                     <p>
-                        Tu es prêt.e à débuter l'expérience :)<br />
-                        Il faut juste <u><a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a></u>
+                        Ceci dit, tu es prêt.e à débuter l'expérience :)<br />
+                        Il ne te reste qu'à <u><a href="{% url 'fitbit-login' %}">t'authentifier auprès de Fitbit</a></u>
                         avec les identifiants fournis.
                     </p>
                 </div>

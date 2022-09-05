@@ -1,6 +1,7 @@
 # dashboard/views.py
 
 import random
+from datetime import date, timedelta
 from pathlib import Path
 
 from django.conf import settings
@@ -28,14 +29,23 @@ def home(request):
     :return: The home page template or the login template.
     """
     if request.user.is_authenticated and is_integrated(request.user):
-        #  If not already present, store the experiment start date after the first login
+        #  Store the experiment start date after the first login and redirect to questionnaire
         if not StartDate.objects.filter(user=request.user).exists():
             StartDate(user=request.user).save()
+            # redirect to self-efficacy questionnaire
+
+        # Retrieve user start date as datetime object and compute end_date
+        start_date = StartDate.objects.get(user=request.user).start_date
+        end_date = start_date + timedelta(days=15)
+        print("""
+              start_date = {start_date}
+              today      = {date.today()}
+              end_date   = {end_date}
+              """)
+        # if date.today() == end_date:
+        # redirect to self-efficacy questionnaire
 
         # Retrieve and parse user PA data per week (for the 2-week steam graph)
-        # start date as datetime object
-        start_date = StartDate.objects.get(user=request.user).start_date
-
         # retrieve necessary user's physical activity (PA) data from database
         wanted_resources = ["minutesFairlyActive", "minutesVeryActive"]
         user_PA_data = TimeSeriesData.objects.filter(
@@ -53,7 +63,7 @@ def home(request):
 
         # separate PA data into lists of 7 days
         weekly_PA_data = [
-            aggregated_PA_data[d : d + 7]
+            aggregated_PA_data[d: d + 7]
             for d in range(0, aggregated_PA_data.count(), 7)
         ]
 
@@ -78,7 +88,8 @@ def home(request):
             ] * (7 - week_2_PA_data.count())
 
         # Pick randomly an informative message about PA
-        messages_path = Path(settings.STATIC_ROOT, "dashboard", "PA_messages.txt")
+        messages_path = Path(settings.STATIC_ROOT,
+                             "dashboard", "PA_messages.txt")
         lines = open(messages_path).read().splitlines()
         message_PA = random.choice(lines)
 
@@ -100,5 +111,6 @@ def home(request):
 
 def service_worker(request):
     sw_path = Path(settings.STATIC_ROOT, "sw.js")
-    response = HttpResponse(open(sw_path).read(), content_type="application/javascript")
+    response = HttpResponse(open(sw_path).read(),
+                            content_type="application/javascript")
     return response

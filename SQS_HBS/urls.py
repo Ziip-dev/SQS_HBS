@@ -20,6 +20,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("fitbit/", include("fitapp.urls")),
     path("", include("dashboard.urls")),
+    path("questionnaire/", include("questionnaire.urls")),
     path("", include("django.contrib.auth.urls")),
     # path("silk/", include("silk.urls", namespace="silk")),
 ]

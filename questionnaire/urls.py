@@ -1,7 +1,16 @@
 from django.urls import path
+from django.views.generic.base import TemplateView
 
-from . import views
+# from .views import QuestionnaireView
+from .views import CreateAnswerView, QuestionnaireView
 
 urlpatterns = [
-    path("question/<int:question_number>/", views.questionnaire, name="questionnaire")
+    path(
+        "",
+        TemplateView.as_view(template_name="questionnaire/instructions.html"),
+        name="instructions",
+    ),
+    path("form/", QuestionnaireView.as_view(), name="questionnaire"),
+    path("create/", CreateAnswerView.as_view(), name="answer-add"),
+    # path("question/<int:pk>/", CreateAnswerView.as_view(), name="answer-add"),
 ]

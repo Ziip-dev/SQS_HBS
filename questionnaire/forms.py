@@ -1,7 +1,20 @@
-from django import forms
+from django.forms import ChoiceField, ModelForm, RadioSelect
 
-# ModelForm
+from .models import Answers
 
 
-class SEQuestionnaire(forms.Form):
-    pass
+class Questionnaire(ModelForm):
+    CHOICES = [
+        (1, "désapprouve fortement"),
+        (2, "désapprouve un peu"),
+        (3, "n'approuve ni ne désapprouve"),
+        (4, "approuve un peu"),
+        (5, "approuve fortement"),
+    ]
+
+    answers = ChoiceField(choices=CHOICES, widget=RadioSelect())
+
+    class Meta:
+        model = Answers
+        fields = ["question", "answer"]
+        # exclude =

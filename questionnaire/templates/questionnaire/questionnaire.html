@@ -1,21 +1,36 @@
 <!-- questionnaire/questionnaire.html -->
 
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
 
 {% block title %} Questionnaire Expérimental {% endblock %}
 
 {% block content %}
 
     <section class="section pb-0">
+        <div class="container has-text-centered">
+            <h3 class="title is-3 has-text-primary">Questionnaire expérimental</h3>
+        </div>
+    </section>
+
+    <section class="section pb-0">
         <div class="container">
             <div class="content">
-                <h5 class="subtitle is-5 has-text-grey-light">Questionnaire expérimental</h5>
-                <div class="box">
-                    <p>
-                        Here comes the questionnaire<br />
-                        Question : {{ question_number }}
-                    </p>
-                </div>
+                <h5 class="subtitle is-5 has-text-grey-light">Question {{ form.question.id }}</h5>
+                <form method="post" action="" class="box">
+                    {% csrf_token %}
+                    {{ form.question.8 }}
+                    <br />
+                    {{ form.answers }}
+                    <br />
+                    <div class="level">
+                        <div class="control level-item">
+                            <button class="button is-rounded is-primary has-text-weight-bold">suivant</button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
     </section>

@@ -3,7 +3,7 @@ from django.forms import ChoiceField, ModelForm, RadioSelect
 from .models import Answers
 
 
-class Questionnaire(ModelForm):
+class QuestionnaireForm(ModelForm):
     CHOICES = [
         (1, "désapprouve fortement"),
         (2, "désapprouve un peu"),
@@ -17,4 +17,3 @@ class Questionnaire(ModelForm):
     class Meta:
         model = Answers
         fields = ["question", "answer"]
-        # exclude =

@@ -1,6 +1,5 @@
-# dashboard/views.py
-
 import random
+from datetime import date, timedelta
 from pathlib import Path
 
 from django.conf import settings
@@ -28,14 +27,19 @@ def home(request):
     :return: The home page template or the login template.
     """
     if request.user.is_authenticated and is_integrated(request.user):
-        #  If not already present, store the experiment start date after the first login
+        #  Store the experiment start date after the first login and redirect to questionnaire
         if not StartDate.objects.filter(user=request.user).exists():
             StartDate(user=request.user).save()
+            return redirect("instructions")
+
+        # Retrieve user start date as datetime object and compute end_date
+        start_date = StartDate.objects.get(user=request.user).start_date
+        end_date = start_date + timedelta(days=15)
+        # Return to questionnaire after 15 days
+        if date.today() == end_date:
+            return redirect("instructions")
 
         # Retrieve and parse user PA data per week (for the 2-week steam graph)
-        # start date as datetime object
-        start_date = StartDate.objects.get(user=request.user).start_date
-
         # retrieve necessary user's physical activity (PA) data from database
         wanted_resources = ["minutesFairlyActive", "minutesVeryActive"]
         user_PA_data = TimeSeriesData.objects.filter(

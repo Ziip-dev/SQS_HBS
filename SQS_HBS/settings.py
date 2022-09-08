@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "dashboard.apps.DashboardConfig",
+    "questionnaire.apps.QuestionnaireConfig",
     "fitapp",
     "django_simple_bulma",
     "widget_tweaks",

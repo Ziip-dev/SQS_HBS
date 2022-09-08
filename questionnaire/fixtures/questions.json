@@ -1,0 +1,98 @@
+[
+  {
+    "pk": 1,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "suivre un programme physique après une longue et fatigante journée de travail.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "suivre un programme physique quand les obligations sociales me prennent beaucoup de temps.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 3,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "suivre un programme physique quand j'ai des tâches ménagères à faire.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 4,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "pratiquer une activité physique même lorsque je me sens déprimé(e).",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 5,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "suivre un programme physique quand ma famille exige plus de mon temps.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 6,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "suivre un programme physique quand je vis un changement de vie stressant (ex. : séparation, décès dans la famille, déménagement).",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 7,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "suivre un programme physique même lorsque j'ai des obligations excessives au travail.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 8,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "réserver du temps pour un programme d'activité physique; c'est-à-dire marcher, courir, nager, rouler en vélo, ou d'autres activités physiques d'une durée minimale de 30 minutes, 3 fois par semaine.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 9,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "me lever tôt, même les week-ends, pour pratiquer une activité physique.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 10,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "assister à une fête seulement après avoir pratiqué une activité physique.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 11,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "lire ou étudier moins pour pratiquer plus d'activité physique.",
+      "questionnaire": 1
+    }
+  },
+  {
+    "pk": 12,
+    "model": "questionnaire.question",
+    "fields": {
+      "question": "continuer à pratiquer une activité physique avec d'autres même lorsqu'ils semblent trop rapides ou trop lents pour moi.",
+      "questionnaire": 1
+    }
+  }
+]

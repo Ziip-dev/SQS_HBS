@@ -1,0 +1,44 @@
+<!-- questionnaire/instructions.html -->
+
+{% extends 'base.html' %}
+
+{% block title %} Questionnaire Expérimental {% endblock %}
+
+{% block content %}
+
+    <!-- Top banner section -->
+    <section class="section pt-5">
+        <div class="container has-text-centered">
+            <h3 class="title is-3 has-text-primary">Questionnaire expérimental</h3>
+        </div>
+    </section>
+
+    <!-- Instructions section -->
+    <section class="section py-0">
+        <div class="container">
+            <div class="content">
+                <h5 class="subtitle is-5 has-text-grey-light">Instructions</h5>
+                <div class="box">
+                    <p>
+                        Tu vas trouver 12 propositions qui peuvent ou non s'appliquer à toi.<br />
+                        Il suffit d'indiquer combien tu approuves ou désapprouves chaque proposition parmi :
+                        <ol class="">
+                            <li> désapprouve fortement</li>
+                            <li> désapprouve un peu</li>
+                            <li> n'approuve ni ne désapprouve</li>
+                            <li> approuve un peu</li>
+                            <li> approuve fortement</li>
+                        </ol>
+                    </p>
+                    <br>
+                    <div class="level">
+                        <div class="control level-item">
+                            <a href="{% url 'questionnaire' questionnaire_pk=1 question=0 %}" class="button is-rounded is-primary has-text-weight-bold">commencer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

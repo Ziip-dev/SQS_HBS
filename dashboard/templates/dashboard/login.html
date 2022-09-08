@@ -9,12 +9,10 @@
 {% block content %}
 
     <!-- Top banner section -->
-    <section class="section">
+    <section class="section py-5">
         <div class="container has-text-centered">
-            <div class="content">
-                <h3 class="title is-3 has-text-primary">Bienvenue</h3>
-                <p class="is-size-5 has-text-primary">Tu es bien sur la page de l'expérience !</p>
-            </div>
+            <h3 class="title is-3 has-text-primary">Bienvenue</h3>
+            <p class="is-size-5 has-text-primary">Tu es bien sur la page de l'expérience !</p>
         </div>
     </section>
 
@@ -30,34 +28,34 @@
     {% endif %}
 
     <!-- Form section -->
-    <div class="container">
-        <form method="post" action="{% url 'login' %}" class="box">
-            {% csrf_token %}
+    <section class="section py-0">
+        <div class="container">
+            <form method="post" action="{% url 'login' %}" class="box">
+                {% csrf_token %}
 
-            <div class="field">
-                <label class="label has-text-grey-light">{{ form.username.label_tag }}</label>
-                <div class="control">
-                    {% render_field form.username class="input is-rounded is-primary" placeholder="identifiant fourni" %}
+                <div class="field">
+                    <label class="label has-text-grey-light">{{ form.username.label_tag }}</label>
+                    <div class="control">
+                        {% render_field form.username class="input is-rounded is-primary" placeholder="identifiant fourni" %}
+                    </div>
                 </div>
-            </div>
 
-            <div class="field">
-                <label class="label has-text-grey-light">{{ form.password.label_tag }}</label>
-                <div class="control">
-                    {% render_field form.password class="input is-rounded is-primary" placeholder="Mot de passe fourni" %}
+                <div class="field">
+                    <label class="label has-text-grey-light">{{ form.password.label_tag }}</label>
+                    <div class="control">
+                        {% render_field form.password class="input is-rounded is-primary" placeholder="Mot de passe fourni" %}
+                    </div>
                 </div>
-            </div>
 
-            <br>
-            <div class="level">
-                <div class="control level-item">
-
-                    <button class="button is-rounded is-primary has-text-weight-bold">commencer</button>
-
+                <br>
+                <div class="level">
+                    <div class="control level-item">
+                        <button class="button is-rounded is-primary has-text-weight-bold">commencer</button>
+                    </div>
                 </div>
-            </div>
 
-        </form>
-    </div>
+            </form>
+        </div>
+    </section>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.forms import ChoiceField, ModelForm, RadioSelect
 
-from .models import Answers
+from .models import Answer
 
 
 class QuestionnaireForm(ModelForm):
@@ -12,8 +12,8 @@ class QuestionnaireForm(ModelForm):
         (5, "approuve fortement"),
     ]
 
-    answers = ChoiceField(choices=CHOICES, widget=RadioSelect())
+    answer = ChoiceField(choices=CHOICES, widget=RadioSelect())
 
     class Meta:
-        model = Answers
-        fields = ["question", "answer"]
+        model = Answer
+        fields = ["answer"]

@@ -2,36 +2,48 @@
 
 {% extends "base.html" %}
 
-{% load widget_tweaks %}
-
 {% block title %} Questionnaire Expérimental {% endblock %}
 
 {% block content %}
 
-    <section class="section pb-0">
+    <!-- Top banner section -->
+    <section class="section pt-5">
         <div class="container has-text-centered">
             <h3 class="title is-3 has-text-primary">Questionnaire expérimental</h3>
         </div>
     </section>
 
-    <section class="section pb-0">
+    <!-- Form section -->
+    <section class="section py-0">
         <div class="container">
             <div class="content">
-                <h5 class="subtitle is-5 has-text-grey-light">Question {{ form.question.id }}</h5>
-                <form method="post" action="" class="box">
+                <h5 class="subtitle is-5 has-text-grey-light">Question {{ question.id }} / 12</h5>
+                <form method="post" class="box">
                     {% csrf_token %}
-                    {{ form.question.8 }}
-                    <br />
-                    {{ form.answers }}
-                    <br />
-                    <div class="level">
-                        <div class="control level-item">
-                            <button class="button is-rounded is-primary has-text-weight-bold">suivant</button>
+
+                    <div class="field is-size-6 pb-4">
+                        Je me sens capable de : {{ question.question }}
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            {{ form.answer }}
                         </div>
                     </div>
-                </form>
 
-            </div>
+                    <br>
+                    <div class="level">
+                        <div class="control level-item">
+                            {% if question.id < 12 %}
+                                <button class="button is-rounded is-primary has-text-weight-bold">suivant</button>
+                            {% else %}
+                                <button class="button is-rounded is-primary has-text-weight-bold">Terminer le questionnaire</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </section>
 

@@ -78,6 +78,7 @@ COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 WORKDIR $APP_DIR
 COPY ./SQS_HBS ./SQS_HBS
 COPY ./dashboard ./dashboard
+COPY ./questionnaire ./questionnaire
 COPY manage.py run-celery.sh ./
 
 # Set execution permission and proper ownership

@@ -30,20 +30,14 @@ def home(request):
         #  Store the experiment start date after the first login and redirect to questionnaire
         if not StartDate.objects.filter(user=request.user).exists():
             StartDate(user=request.user).save()
-            return redirect("questionnaire")
+            return redirect("instructions")
 
         # Retrieve user start date as datetime object and compute end_date
         start_date = StartDate.objects.get(user=request.user).start_date
         end_date = start_date + timedelta(days=15)
-        print(
-            """
-              start_date = {start_date}
-              today      = {date.today()}
-              end_date   = {end_date}
-              """
-        )
-        # if date.today() == end_date:
-        # return redirect("questionnaire")
+        # Return to questionnaire after 15 days
+        if date.today() == end_date:
+            return redirect("instructions")
 
         # Retrieve and parse user PA data per week (for the 2-week steam graph)
         # retrieve necessary user's physical activity (PA) data from database

@@ -24,4 +24,4 @@ class StartDate(models.Model):
     )
 
     def __str__(self):
-        return self.start_date.strftime("%Y-%m-%d")
+        return f"{self.user} - {self.start_date.strftime('%Y-%m-%d')}"

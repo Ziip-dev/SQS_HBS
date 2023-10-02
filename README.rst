@@ -129,6 +129,8 @@ detailed description.
 ROADMAP
 =======
 
+- *completed*
+
 
 CHANGELOG
 =========

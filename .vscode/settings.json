@@ -1,5 +1,14 @@
 {
-  "todo-tree.tree.showBadges": false,
-  "todo-tree.tree.disableCompactFolders": false,
-  "todo-tree.tree.showCountsInTree": false
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "SQS_HBS-dev-local",
+      "database": "dev-db",
+      "username": "ziip",
+      "password": "supersecretdevpassword"
+    }
+  ]
 }

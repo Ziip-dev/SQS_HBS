@@ -3,8 +3,10 @@ Self-Quantification System for Health Behavior Support
 ======================================================
 
 This is an experimental PhD project that personalises interactions in human-computer interfaces based on personality traits (see `Big Five personality traits <https://en.wikipedia.org/wiki/Big_Five_personality_traits>`_).
-It provides a customised mobile app for users with high neuroticism levels using an interdisciplinary approach that combines behavioural psychology and human-computer interactions.
+
 The experiment aimed to investigate if using an individualised app could improve the effectiveness of supporting physical activity behaviour change for users with high neuroticism.
+
+This project provides a customised mobile app for users with high neuroticism levels using an interdisciplinary approach that combines behavioural psychology and human-computer interactions.
 
 
 GETTING STARTED
@@ -66,10 +68,6 @@ Deployment
 
 
 
-
-
-
-
 The app is containerised for easier testing and deployment.
 You can either run it in a Docker container, automatically deploy it using Caprover on a server, or run it natively:
 
@@ -94,28 +92,6 @@ Caprover PaaS
        $ captain deploy
 
 
-Native
-------
-
-1. Clone the repository:
-
-   ::
-
-       $ git clone https://github.com/Ziip-dev/BFI-Personality-questionnaire
-
-2. Install the required dependencies (poetry is recommended):
-
-   ::
-
-       $ poetry install --no-dev
-
-3. Run the Flask web server from the virtual environment:
-
-   ::
-
-       $ poetry run flask run
-
-
 Software stack details
 ======================
 
@@ -131,16 +107,6 @@ It is built around:
 - **RabbitMQ** :: for job queuing, e.g. pending Fitbit Web API requests, database read/write, etc.
 
 - **Celery** :: concurrent task execution, e.g. to simultaneously retrieve multiple users data from the Fitbit Web API.
-
-
-
-
-
-
-USAGE
-=====
-
-TODO/doc #3 - usage
 
 
 LICENSE
@@ -167,42 +133,33 @@ ROADMAP
 CHANGELOG
 =========
 
-- Intégrer les messages d'information sur les conséquences émotionnelles de l'AP.
+- Integrate information messages on the emotional consequences of PA.
 
-- Test IRL sur téléphone.
+- IRL phone test.
 
-- Mettre en place le dashboard utilisateur.
+- Set up the user dashboard.
 
-- Transformer en PWA (tout est dans les ressources collectées + livre).
+- Turn into a PWA.
 
-- Intégrer Celery pour bénéficier des tasks asynchrones déjà écrites dans
-  fitapp, changer le database backend pour gérer efficacement la concurrence
-  et passer sur un execution pool basé sur des green threads.
+- Integrate Celery to take advantage of the asynchronous tasks already written in the fitapp project, change the backend database to manage concurrency effectively and switch to an execution pool based on green threads.
 
+- Switch to a monitoring system based on issues + pull requests, the README will become bigger than the code otherwise...
 
-- Basculer sur un système de suivi par issues + pull request,
-  le README va devenir plus gros que le code sinon...
+- Solving the problem of requests from different users:
 
+    - declare a Server App on my Fitbit account.
 
-- Solutionner le problème lors de requêtes provenant d'utilisateurs
-    différents
+    - test whether I can retrieve non-intraday data for :code:`test-user-1` AND :code:`test-user-2`.
 
-    - déclaration d'une Server App sur mon compte fitbit.
+- Get the :code:`fitapp` django app working now that I have update it and correctly declared.
 
-    - tester si je récupère les données non-intraday pour Ines ET Anais.
+  - set up user authentication to access fitbit views.
 
+      - :code:`livereload` server for fast development of templates
 
-- Faire fonctionner fitapp maintenant qu'elle est à jour et correctement
-  déclarée.
+        --> cancelled, too many bugs during live reloads.
 
-  - mettre en place l'authentification des utilisateurs pour accéder
-    aux views fitbit.
-
-      - livereload server for fast development of templates
-        --> cancelled, trop de bugs lors des livereloads.
-
-      - WhiteNoise setup for static files serving.
-
+      - :code:`WhiteNoise` setup for static files serving.
 
 
 DEBUG NOTES

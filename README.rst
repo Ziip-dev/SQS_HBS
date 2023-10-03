@@ -20,24 +20,31 @@ Requirements
 - :code:`poetry` (optional but recommended)
 
 
-Installation
-------------
+For production
+--------------
 
+To deploy on a server, the easiest solution is by far using `Caprover PaaS <https://caprover.com/>`_.
 
-For production (temporary)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Clone the project repository::
+1. Clone the project repository locally: ::
 
     git clone https://github.com/Ziip-dev/SQS_HBS.git
 
-Create a python virtual environment ::
+2. The app needs to be deployed twice in two different instances: one for the webserver, and one for celery (which have a different entry point). This is the method actually used by Heroku for such cases.
 
-    poetry env use /path/to/python3.10
+   - Hence, set up 2 server side apps (see `Caprover documentation <https://caprover.com/docs/get-started.html>`_ on Caprover.
 
-Install dependencies ::
+   - Navigate to the first app, go to :code:`DEPLOYMENT` tab, and edit the :code:`captain-definition` path to :code:`./captain-definition-webserver`.
 
-    poetry install
+   - Then do the same for the second instance with :code:`./captain-definition-celery`
+
+3. Caprover should now be able to deploy the app to its dedicated instance using the correct entry point (do this twice, for the webserver and for celery): ::
+
+    caprover deploy
+
+4. Create a :TODO:
+
+5. Finally, use the Django admin site to create users as needed.
+
 
 
 For development
@@ -64,14 +71,6 @@ Deployment
 - collectstatic to run on server
 
 
-
-
-
-
-The app is containerised for easier testing and deployment.
-You can either run it in a Docker container, automatically deploy it using Caprover on a server, or run it natively:
-
-
 Docker
 ------
 
@@ -82,23 +81,15 @@ Docker
        $ ./start_container.sh
 
 
-Caprover PaaS
--------------
-
-1. Use the Caprover CLI to deploy the Dockerfile on a server and automatically build it there (your remote server has to run Caprover):
-
-   ::
-
-       $ captain deploy
-
-
-Software stack details
-======================
+Software stack
+==============
 
 This web app is configured as a PWA so it can be installed on mobile phones, which was the aim of the experiment.
 It is built around:
 
 - **Django** :: to leverage built-in user authentication and built-in class-based generic views.
+
+- **`django-fitbit <https://github.com/Ziip-dev/django-fitbit>`_** :: a django app that I have updated to manage Fitbit authentication, API requests, and database writes.
 
 - **Bulma** :: to speed up the frontend development with ready-to-use components that can be easily combined to build a responsive interface.
 
@@ -107,6 +98,7 @@ It is built around:
 - **RabbitMQ** :: for job queuing, e.g. pending Fitbit Web API requests, database read/write, etc.
 
 - **Celery** :: concurrent task execution, e.g. to simultaneously retrieve multiple users data from the Fitbit Web API.
+
 
 
 LICENSE
